@@ -67,7 +67,7 @@
     - de (from [MATZE-MAN](https://github.com/MATZE-MAN))
 
 ## Attention!!! 
-This app only works on versions 2026.01.*+
+This app only works on versions 2026.01.1+
 It doesn't work on versions 2025.12- due to an API change.
 
 ## 📦 Installation
