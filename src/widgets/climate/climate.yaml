@@ -3736,14 +3736,14 @@ script:
 
             lv_obj_t * icon = lv_label_create(btn);
             lv_label_set_text(icon, icon_for(list[i]).c_str());
-            lv_obj_set_style_text_font(icon, mdi_24.get_lv_font(), 0);
+            lv_obj_set_style_text_font(icon, mdi_icons_24->get_lv_font(), 0);
 
             lv_obj_t * txt = lv_label_create(btn);
             std::string caption = list[i];
             if (!caption.empty())
               caption[0] = (char)std::toupper((unsigned char)caption[0]);
             lv_label_set_text(txt, caption.c_str());
-            lv_obj_set_style_text_font(txt, nunito_16.get_lv_font(), 0);
+            lv_obj_set_style_text_font(txt, nunito_16->get_lv_font(), 0);
 
             set_btn_state(btn, i == sel);
 
@@ -3911,14 +3911,14 @@ script:
 
             lv_obj_t * icon = lv_label_create(btn);
             lv_label_set_text(icon, icon_for(list[i]).c_str());
-            lv_obj_set_style_text_font(icon, mdi_24.get_lv_font(), 0);
+            lv_obj_set_style_text_font(icon, mdi_icons_24->get_lv_font(), 0);
 
             lv_obj_t * txt = lv_label_create(btn);
             std::string caption = list[i];
             if (!caption.empty())
               caption[0] = (char)std::toupper((unsigned char)caption[0]);
             lv_label_set_text(txt, caption.c_str());
-            lv_obj_set_style_text_font(txt, nunito_16.get_lv_font(), 0);
+            lv_obj_set_style_text_font(txt, nunito_16->get_lv_font(), 0);
 
             set_btn_state(btn, i == sel);
 
