@@ -44,6 +44,7 @@ i18n:
 esphome:
   name: ${display_name}
   friendly_name: ${display_friendly_name}
+  min_version: 2026.1.0
   includes:
     - <sstream>
     - <algorithm>
