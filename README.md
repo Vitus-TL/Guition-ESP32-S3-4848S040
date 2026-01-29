@@ -61,10 +61,10 @@
     - pl (from [reaper7](https://github.com/reaper7))
     - fr (from [lboue](https://github.com/lboue))
     - es (from Antonio)
+    - nl (from [zjean](https://github.com/zjean))
     - si (from [Protoncek](https://github.com/Protoncek))
     - it (from [echopage1964](https://github.com/echopage1964))
     - de (from [MATZE-MAN](https://github.com/MATZE-MAN))
-    - nl (from [Vitus-TL](https://github.com/Vitus-TL))
       
 ## Attention!!! 
 This app only works on versions 2026.01.1+
