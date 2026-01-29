@@ -4,8 +4,8 @@ loading:
 
 ota:
   start:
-    primary: "OTA starten!"
-    secondary: "Even geduld..."
+    primary: "OTA gestart!"
+    secondary: "Even geduld aub..."
   end: 
     primary: "Update voltooid!"
     secondary: "Herstarten..."
