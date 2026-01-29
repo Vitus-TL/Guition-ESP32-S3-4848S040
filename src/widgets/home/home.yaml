@@ -574,7 +574,8 @@ lvgl:
                         width: 400
                         height: 2
                         align: bottom_mid
-                        bg_color: color_misty_blue
+                        # bg_color: color_misty_blue
+                        bg_color: color_light_blue
                         border_opa: transp
                         shadow_opa: transp
 
@@ -616,7 +617,8 @@ lvgl:
                         y: 0
                         align: top_mid
                         text_font: nunito_64
-                        text_color: color_misty_blue
+                        # text_color: color_misty_blue
+                        text_color: color_white
                         text: "23:59"
 
                     - obj:
@@ -625,7 +627,8 @@ lvgl:
                         width: 400
                         height: 2
                         align: bottom_mid
-                        bg_color: color_misty_blue
+                        # bg_color: color_misty_blue
+                        bg_color: color_light_blue
                         border_opa: transp
                         shadow_opa: transp
 
