@@ -77,7 +77,7 @@ It doesn't work on versions 2025.12- due to an API change.
 
 - You must enable the "Allow the device to perform Home Assistant actions." option in the ESPHome integration to Home Assistant to control devices.
 - Install custom component for forecasts and covers for media player from [here](https://github.com/alaltitov/homeassistant-display-tools).
-- Copy repository to vscode or to esphome folder of your Home Assistant. Change in substitutions.yaml and config.yaml (light folder) your entities in all widgets (only in substitution, in code everything will be substituted automatically).
+- Copy repository to vscode or to esphome folder of your Home Assistant. Change in substitutions.yaml and config.yaml (light folder) your entities in all widgets (only in substitution, in code everything will be substituted automatically). E.g. weather_entity: "weather.buienradar", secondary_language: "nl", timezone: "Europe/Amsterdam"
 
 ## 📖 Documentation
 - [Firmware](https://alaltitov.github.io/Guition-ESP32-S3-4848S040-DOCS)  (Need update, coming soon...)
