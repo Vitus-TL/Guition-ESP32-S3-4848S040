@@ -50,7 +50,6 @@ esphome:
     - <algorithm>
   platformio_options:
     board_build.flash_mode: dio
-    build_jobs: 12
 
   on_boot:
     - priority: 400

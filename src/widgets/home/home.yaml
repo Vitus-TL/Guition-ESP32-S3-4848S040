@@ -3,6 +3,9 @@ packages:
 
 globals:
 
+  - id: climate_temp
+    type: float
+
   - id: display_lock
     type: bool
     restore_value: yes
@@ -272,6 +275,16 @@ sensor:
               return "${wifi_100_icon}";
               }
               return "${wifi_100_icon}";
+
+  - platform: homeassistant
+    entity_id: climate.anna
+    attribute: current_temperature
+    id: climate_anna_temp
+    on_value:
+    - lambda: |-
+        char temp_buf[16];
+        snprintf(temp_buf, sizeof(temp_buf), "%.1f°", x);
+        lv_label_set_text(id(circle_home_widget_temp_value), temp_buf);
 
 text_sensor:
 
@@ -1483,14 +1496,14 @@ lvgl:
                               align: top_mid
                               text_font: nunito_20
                               text_color: color_misty_blue
-                              text: "22.5°"
+                              text: "${cl_anna_current_temperature}°"
                           - label:
                               y: -15
                               id: circle_home_widget_hum_value
                               align: bottom_mid
                               text_font: nunito_20
                               text_color: color_misty_blue
-                              text: "62 %"
+                              text: "100 %"
                           - obj:
                               id: circle_home_widget_line
                               width: 74
