@@ -5,14 +5,14 @@ loading:
 ota:
   start:
     primary: "Starten van OTA!"
-    secondary: "Even geduld..."
+    secondary: "Wacht..."
   end: 
-    primary: "Update voltooid!"
+    primary: "Update afgerond!"
     secondary: "Herstarten..."
   error:
     primary: "Update FOUT!"
     secondary: "Herstarten..."
-  progress: "Firmware voortgang %0.1f%%"
+  progress: "Firmware vooruitgang %0.1f%%"
 
 settings:
   backlight: "Backlight"
