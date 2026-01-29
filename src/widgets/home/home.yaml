@@ -183,7 +183,7 @@ sensor:
       then:
         - if:
             condition:
-              lambda: return id(weather_wind_speed_unit_sensor).state == "km/h";
+              lambda: return id(weather_wind_speed_unit_sensor).state == " km/h";
             then:
               - lvgl.label.update:
                   id: weather_wind_speed_value
