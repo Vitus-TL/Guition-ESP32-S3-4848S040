@@ -85,6 +85,7 @@
     "\U0000e901", # saturation
     "\U0000e925", # thermostat
     "\U0000e93b", # air_conditioner 
+    "\U0000e91b", # music 
     "\U0000e936", # heating
     "\U0000e92e", # lock
     "\U0000e935", # home assistant
@@ -174,6 +175,7 @@
     "\U0000e923", # locate
     "\U0000e924", # docked
     "\U0000e93b", # air_conditioner 
+    "\U0000e91b", # music
     "\U0000e936", # heating
     "\U0000e938", # humidity
     "\U0000e939", # temperature 
@@ -184,11 +186,11 @@
   size: 72
   bpp: 4
   glyphs: [
-    "\U0000e91b", # music
     "\U0000e91d", # shutter_close
     "\U0000e922", # vacuum
     "\U0000e925", # thermostat
     "\U0000e93b", # air_conditioner
+    "\U0000e91b", # music
   ]
 
 - file: "assets/fonts/icons_v2.ttf"
@@ -213,7 +215,7 @@
     "\U0000e943", # 70 - shutter
     "\U0000e944", # 80 - shutter
     "\U0000e942", # 90 - shutter
-    "\U0000e91e",  # 100 - shutter_open
+    "\U0000e91e", # 100 - shutter_open
     "\U0000e91b", # music
     "\U0000e91f", # arrow_up
     "\U0000e920", # arrow_down

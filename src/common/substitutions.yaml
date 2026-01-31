@@ -21,6 +21,7 @@ timezone:                  "Europe/Amsterdam"
 lock_icon:                  "\U0000e92e"
 lock_variant_icon:          "\U000F0341"
 air_conditioner_icon:       "\U0000e93b" 
+music_icon:                 "\U0000e91b"
 heating_icon:               "\U0000e936"
 ha_icon:                    "\U000F07D0" # home assistant
 wifi_25_icon:               "\U0000e931" # wifi signal from 25% to 1%

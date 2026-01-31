@@ -4,7 +4,7 @@ packages:
   light: !include widgets/light/config.yaml
   devices: !include common/widgets/devices.yaml
   climate: !include widgets/climate/climate.yaml
-  # media_player: !include widgets/media_player/media_player.yaml
+  media_player: !include widgets/media_player/media_player.yaml
   # vacuum: !include widgets/vacuum/vacuum.yaml
   # cover: !include widgets/cover/config.yaml
   boiler: !include widgets/boiler/config.yaml
@@ -62,6 +62,8 @@ esphome:
         - lvgl.roller.update:
             id: backlight_settings_sleep_time_roller
             selected_index: !lambda return id(display_timeout);
+
+  compile_process_limit: 12  # Max parallel compiles
 
 esp32:
   board: esp32-s3-devkitc-1
