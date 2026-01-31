@@ -20,7 +20,7 @@ globals:
     restore_value: no
 
 sensor:
-  # TARGET TEMPERATURE STEP (автоматически подтягивается)
+  # TARGET TEMPERATURE STEP  (automatically pulled in)
   - platform: homeassistant
     id: ${widget_name}_sensor_target_temp_step
     entity_id: "${boiler_entity}"
@@ -99,7 +99,7 @@ sensor:
             snprintf(buf, sizeof(buf), "%.1f", x);
             return std::string(buf);
 
-  # MIN TEMPERATURE (автоматически подтягивается)
+  # MIN TEMPERATURE  (automatically pulled in)
   - platform: homeassistant
     id: ${widget_name}_sensor_min_temp
     entity_id: "${boiler_entity}"
@@ -109,7 +109,7 @@ sensor:
           ESP_LOGI("${widget_name}_RANGE", "min_temp updated: %.1f", x);
       - script.execute: ${widget_name}_update_arc_temp_range
     
-  # MAX TEMPERATURE (автоматически подтягивается)
+  # MAX TEMPERATURE  (automatically pulled in)
   - platform: homeassistant
     id: ${widget_name}_sensor_max_temp
     entity_id: "${boiler_entity}"
@@ -731,7 +731,7 @@ lvgl:
               - lvgl.page.show: home_page
 
 script:
-  # АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ ДИАПАЗОНА (min_temp, max_temp)
+  #  AUTOMATIC RANGE UPDATE (min_temp, max_temp)
   - id: ${widget_name}_update_arc_temp_range
     then:
       - lambda: |-
@@ -758,7 +758,7 @@ script:
             ESP_LOGI("${widget_name}_RANGE", "Range initialized successfully");
           }
 
-  # ОБНОВЛЕНИЕ СЕГМЕНТОВ (визуализация разницы между текущей и целевой температурой)
+  # SEGMENT UPDATE (visualization of difference between current and target temperature)
   - id: ${widget_name}_update_segments
     mode: restart
     then:
