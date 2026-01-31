@@ -1,11 +1,11 @@
-boiler_ch_entity:       "climate.diyless_thermostat_3_central_heating"
-boiler_dhw_entity:      "climate.diyless_thermostat_3_domestic_hot_water"
-boiler_manual_entity:   "climate.diyless_thermostat_3_heating_manual_mode"
+boiler_ch_entity:       "climate.anna"                                      # Plugwise Anna temperature control
+boiler_dhw_entity:      "number.opentherm_domestic_hot_water_setpoint"      # Plugwise Anna setpoint for tap water (DHW)
+boiler_manual_entity:   "anna.setpoint"                                     # Plugwise Anna manual temperature setpoint 
 
 
-boiler_arc_color:           "color_deep_orange"    # Цвет основной арки (оранжевый)
-boiler_arc_segment_color:   "color_red"    # Цвет сегмента разницы температур (красный)
-boiler_button_color:        "color_deep_orange"    # Цвет кнопок +/- в активном режиме
+boiler_arc_color:           "color_deep_orange"   # Main arc color (orange)
+boiler_arc_segment_color:   "color_red"           # Temperature difference segment color (red)
+boiler_button_color:        "color_deep_orange"   # +/- buttons color in active mode
 
 
 heat_icon:                  "\U000F0238"
