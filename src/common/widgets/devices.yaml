@@ -143,8 +143,8 @@ lvgl:
                         text_font: nunito_18
                         text_color: color_misty_blue
                         text: "Media player"
-                  # on_click:
-                  #   - lvgl.page.show: media_player_page
+                  on_click:
+                    - lvgl.page.show: media_player_page
 
               # Vacuum button
               # - button:
