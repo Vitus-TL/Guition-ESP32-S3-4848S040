@@ -8,24 +8,24 @@ packages:
     vars:
       boiler_entity: "${boiler_ch_entity}"
       widget_name: boiler_ch
-      boiler_arc_color:           "0xff6600"    # Цвет основной арки (оранжевый)
-      boiler_arc_segment_color:   "0xff0000"    # Цвет сегмента разницы температур (красный)
-      boiler_button_color:        "0xff6600"    # Цвет кнопок +/- в активном режиме
+      boiler_arc_color:           "0xff6600"    # Main arc color (orange)
+      boiler_arc_segment_color:   "0xff0000"    # Temperature difference segment color (red)
+      boiler_button_color:        "0xff6600"    # +/- buttons color in active mode
 
   boiler_dhw: !include
     file: boiler.yaml
     vars:
       boiler_entity: "${boiler_dhw_entity}"
       widget_name: boiler_dhw
-      boiler_arc_color:           "0x4C9FFF"    # Цвет основной арки (оранжевый)
-      boiler_arc_segment_color:   "0x4867aa"    # Цвет сегмента разницы температур (красный)
-      boiler_button_color:        "0x4C9FFF"    # Цвет кнопок +/- в активном режиме
+      boiler_arc_color:           "0x4C9FFF"    # Main arc color (blue)
+      boiler_arc_segment_color:   "0x4867aa"    # Temperature difference segment color (dark blue)
+      boiler_button_color:        "0x4C9FFF"    # +/- buttons color in active mode
 
   boiler_manual: !include
     file: boiler.yaml
     vars:
       boiler_entity: "${boiler_manual_entity}"
       widget_name: boiler_manual
-      boiler_arc_color:           "0x00ff00"    # Цвет основной арки (оранжевый)
-      boiler_arc_segment_color:   "0x5CA848"    # Цвет сегмента разницы температур (красный)
-      boiler_button_color:        "0x00ff00"    # Цвет кнопок +/- в активном режиме
+      boiler_arc_color:           "0x00ff00"    # Main arc color (green)
+      boiler_arc_segment_color:   "0x5CA848"    # Temperature difference segment color (dark green)
+      boiler_button_color:        "0x00ff00"    # +/- buttons color in active mode
