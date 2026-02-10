@@ -1,6 +1,6 @@
 boiler_ch_entity:       "climate.anna"                                      # Plugwise Anna temperature control
 boiler_dhw_entity:      "number.opentherm_domestic_hot_water_setpoint"      # Plugwise Anna setpoint for tap water (DHW)
-boiler_manual_entity:   "anna.setpoint"                                     # Plugwise Anna manual temperature setpoint 
+boiler_manual_entity:   "climate.anna"                                      # Plugwise Anna manual temperature setpoint 
 
 
 boiler_arc_color:           "color_deep_orange"   # Main arc color (orange)

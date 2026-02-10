@@ -277,9 +277,9 @@ sensor:
               return "${wifi_100_icon}";
 
   - platform: homeassistant
-    entity_id: climate.anna
+    entity_id: "${climate_entity}"
     attribute: current_temperature
-    id: climate_anna_temp
+    id: climate_anna_temp # Should be non-specific
     on_value:
     - lambda: |-
         char temp_buf[16];
