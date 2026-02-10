@@ -1,5 +1,5 @@
 packages:
-  # Селектор светильников для комнаты
+  # Room light fixture selector
   room_light_selector: !include
     file: light_select.yaml
     vars:
