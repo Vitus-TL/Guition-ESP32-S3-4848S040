@@ -38,7 +38,7 @@ globals:
 
 
 binary_sensor:
-  # НОВОЕ: Отслеживание состояния лампы (on/off)
+  # NEW: Отслеживание состояния лампы (on/off)
   - platform: homeassistant
     id: ${widget_name}_light_state
     entity_id: "${light_entity}"
@@ -46,12 +46,12 @@ binary_sensor:
       # При изменении состояния лампы обновляем цвет виджета
       - script.execute: ${widget_name}_update_lightbulb_color
 
-  # ИСПРАВЛЕНО: Управление кнопкой лампочки
+  # FIXED: Управление кнопкой лампочки
   - platform: lvgl
     id: ${widget_name}_light_btn_control
     widget: ${widget_name}_lightbulb_btn
     on_click:
-      # КОРОТКОЕ нажатие (50-500ms) - ВСЕГДА включает/выключает лампу
+      # КОРОТКОЕ press (50-500ms) - ВСЕГДА включает/выключает лампу
       - min_length: 50ms
         max_length: 500ms
         then:
@@ -62,7 +62,7 @@ binary_sensor:
           - lambda: |-
               ESP_LOGD("light_btn", "Short press - toggling light");
       
-      # ДОЛГОЕ нажатие (800-3000ms) - переключение режима (только если поддерживается)
+      # LONG PRESS press (800-3000ms) - переключение режима (только если поддерживается)
       - min_length: 800ms
         max_length: 3000ms
         then:
@@ -119,7 +119,7 @@ sensor:
             - lvgl.arc.update:
                 id: ${widget_name}_light_arc_color_temp
                 value: !lambda return int(x);
-            # НОВОЕ: Обновляем цвет лампочки при изменении температуры от HA
+            # NEW: Обновляем цвет лампочки при изменении температуры от HA
             # Но только если мы в режиме color_temp
             - if:
                 condition:
@@ -154,7 +154,7 @@ text_sensor:
             - lvgl.arc.update:
                 id: ${widget_name}_light_arc_hue
                 value: !lambda return id(${widget_name}_current_hue);
-            # ИСПРАВЛЕНО: Обновляем saturation slider только если он видим
+            # FIXED: Обновляем saturation slider только если он видим
             - if:
                 condition:
                   lambda: |-
@@ -165,7 +165,7 @@ text_sensor:
                       id: ${widget_name}_light_saturation_slider
                       value: !lambda return id(${widget_name}_current_saturation);
             
-            # НОВОЕ: Обновляем цвет лампочки при изменении HS от HA
+            # NEW: Обновляем цвет лампочки при изменении HS от HA
             # Но только если мы в режиме HS
             - if:
                 condition:
@@ -206,7 +206,7 @@ text_sensor:
           );
           
           // ═══════════════════════════════════════════════════════════════════
-          // НОВОЕ: Умный выбор начального режима
+          // # NEW: Умный выбор начального режима
           // ═══════════════════════════════════════════════════════════════════
           
           if (id(${widget_name}_supports_hs) || id(${widget_name}_supports_rgb)) {
@@ -317,7 +317,7 @@ lvgl:
                   knob:
                     bg_opa: transp
                   
-                  # НОВОЕ: on_value для обновления цвета лампочки в реальном времени
+                  # NEW: on_value для обновления цвета лампочки в реальном времени
                   on_value:
                     - globals.set:
                         id: ${widget_name}_current_brightness
@@ -367,7 +367,7 @@ lvgl:
                   knob:
                     bg_opa: transp
                   
-                  # НОВОЕ: on_value для обновления цвета лампочки в реальном времени
+                  # NEW: on_value для обновления цвета лампочки в реальном времени
                   on_value:
                     - globals.set:
                         id: ${widget_name}_current_saturation
@@ -531,7 +531,7 @@ lvgl:
                           border_width: 4
                           shadow_opa: transp
                         
-                        # НОВОЕ: on_value для обновления цвета лампочки в реальном времени
+                        # NEW: on_value для обновления цвета лампочки в реальном времени
                         on_value:
                           - globals.set:
                               id: ${widget_name}_current_hue
@@ -577,7 +577,7 @@ lvgl:
                           border_width: 4
                           shadow_opa: transp
                         
-                        # НОВОЕ: on_value для обновления цвета лампочки в реальном времени
+                        # NEW: on_value для обновления цвета лампочки в реальном времени
                         on_value:
                           - globals.set:
                               id: ${widget_name}_current_color_temp
