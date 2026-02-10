@@ -2,7 +2,7 @@ globals:
   - id: ${widget_name}_supported_features
     type: int
     restore_value: no
-    initial_value: '63'  # По умолчанию все функции
+    initial_value: '63'  # All functions enabled by default
 
   - id: ${widget_name}_current_mode
     type: int
@@ -51,7 +51,7 @@ sensor:
           
           ESP_LOGD("fan", "Has preset_mode: %d", has_preset_mode);
           
-          // Скрываем/показываем арку
+          // Hide/show arc
           if (has_set_speed) {
             lv_obj_add_flag(id(${widget_name}_arc), LV_OBJ_FLAG_CLICKABLE);
             lv_obj_clear_flag(id(${widget_name}_arc), LV_OBJ_FLAG_HIDDEN);
@@ -60,9 +60,9 @@ sensor:
             lv_obj_add_flag(id(${widget_name}_arc), LV_OBJ_FLAG_HIDDEN);
           }
           
-          // Управление кнопками OSCILLATE и DIRECTION
+          // Control of OSCILLATE and DIRECTION buttons
           if (has_oscillate || has_direction) {
-            // Показываем оба контейнера
+            // Show both containers
             lv_obj_clear_flag(id(${widget_name}_oscillating_btn_bg), LV_OBJ_FLAG_HIDDEN);
             lv_obj_clear_flag(id(${widget_name}_direction_btn_bg), LV_OBJ_FLAG_HIDDEN);
             
@@ -84,7 +84,7 @@ sensor:
               lv_obj_set_style_text_color(id(${widget_name}_direction_btn_icon), lv_color_hex(0x3D5A6C), 0);
             }
           } else {
-            // Скрываем оба контейнера
+            // Hide both containers
             lv_obj_add_flag(id(${widget_name}_oscillating_btn_bg), LV_OBJ_FLAG_HIDDEN);
             lv_obj_add_flag(id(${widget_name}_direction_btn_bg), LV_OBJ_FLAG_HIDDEN);
           }
@@ -120,7 +120,7 @@ sensor:
             snprintf(buf, sizeof(buf), "%.0f%%", x);
             return buf;
       
-      # Обновляем скорость ТОЛЬКО если вентилятор включен!
+      # Update speed ONLY if fan is on!"
       - if:
           condition:
             lambda: 'return id(${widget_name}_state_sensor).state == "on";'
@@ -392,7 +392,7 @@ text_sensor:
                 id: ${widget_name}_direction_btn_icon
                 text: "${rotate_left_icon}"
       
-      # Обновляем направление ТОЛЬКО если вентилятор включен!
+      # Update direction ONLY if fan is on!
       - if:
           condition:
             lambda: 'return id(${widget_name}_state_sensor).state == "on";'
@@ -1011,22 +1011,22 @@ lvgl:
                               int raw_value = int(x);
                               int rounded_value = raw_value;
                               
-                              // Округление до ближайшего шага
+                              // Round to nearest step
                               float step = id(${widget_name}_percentage_step);
                               if (step > 1.0) {
-                                // Вычисляем количество шагов
+                                // Calculate step count"
                                 int num_steps = round(raw_value / step);
                                 rounded_value = round(num_steps * step);
                                 
-                                // Ограничиваем диапазон 0-100
+                                // Limit range to 0-100
                                 if (rounded_value < 0) rounded_value = 0;
                                 if (rounded_value > 100) rounded_value = 100;
                                 
-                                // Обновляем визуальное отображение арки
+                                // Update arc visual display
                                 lv_arc_set_value(id(${widget_name}_arc), rounded_value);
                               }
                               
-                              // Сохраняем значение для последующего использования
+                              // Save value for later use
                               id(${widget_name}_current_percentage) = rounded_value;
                           
                           - homeassistant.action:
@@ -1103,41 +1103,41 @@ script:
       - lambda: |-
           ESP_LOGD("fan", "START_ANIMATION script called");
           
-          // Проверяем, не запущена ли уже анимация
+          // Check if animation is already running
           if (id(${widget_name}_is_animating)) {
             ESP_LOGD("fan", "Animation already running, skipping");
             return;
           }
           
-          // Получаем указатель на виджет
+          // Get widget pointer
           auto img_widget = id(${widget_name}_state_image);
           lv_obj_t* img = img_widget;
           
-          // Останавливаем предыдущие анимации
+          // Stop previous animations
           lv_anim_del(img, nullptr);
           
-          // Меняем изображение на зеленое при старте анимации
+          // Set image to green on animation start
           lv_img_set_src(img, id(fan_green_image));
           
-          // Получаем процент для расчета скорости
+          // Calculate speed percentage
           int percentage = id(${widget_name}_current_percentage);
           if (percentage < 1) percentage = 100;
           
-          // Вычисляем время анимации
+          // Calculate animation duration
           int anim_time = (int)(3000.0 / (percentage / 33.0));
           if (anim_time < 500) anim_time = 500;
           if (anim_time > 5000) anim_time = 5000;
           
           ESP_LOGD("fan", "Animation time: %d ms (percentage: %d)", anim_time, percentage);
           
-          // Определяем направление
+          // Determine animation direction
           bool is_forward = id(${widget_name}_direction_sensor).state == "forward";
           int start_angle = is_forward ? 0 : 3600;
           int end_angle = is_forward ? 3600 : 0;
           
           ESP_LOGD("fan", "Direction: %s", is_forward ? "forward" : "reverse");
           
-          // Создаем анимацию вращения
+          // Create spin animation
           lv_anim_t anim_rotation;
           
           lv_anim_init(&anim_rotation);
@@ -1151,7 +1151,7 @@ script:
           lv_anim_set_path_cb(&anim_rotation, lv_anim_path_linear);
           lv_anim_start(&anim_rotation);
           
-          // Устанавливаем флаг анимации
+          // Set animation in progress flag
           id(${widget_name}_is_animating) = true;
           
           ESP_LOGD("fan", "✓ Animation STARTED");
@@ -1161,20 +1161,20 @@ script:
       - lambda: |-
           ESP_LOGD("fan", "STOP_ANIMATION script called");
           
-          // Получаем указатель на виджет
+          // Get widget pointer
           auto img_widget = id(${widget_name}_state_image);
           lv_obj_t* img = img_widget;
           
-          // Останавливаем анимации
+          // Stop all animations
           lv_anim_del(img, nullptr);
           
-          // Возвращаем изображение на исходное (голубое)
+          // Restore image to original (blue)
           lv_img_set_src(img, id(fan_misty_image));
           
-          // Сбрасываем угол поворота
+          // Reset rotation angle
           lv_img_set_angle(img, 0);
           
-          // Сбрасываем флаг анимации
+          // Clear animation flag
           id(${widget_name}_is_animating) = false;
           
           ESP_LOGD("fan", "✓ Animation STOPPED");
@@ -1184,7 +1184,7 @@ script:
       - lambda: |-
           ESP_LOGD("fan", "UPDATE_SPEED called");
           
-          // Обновляем скорость только если анимация запущена
+          // Update speed only if animation is running
           if (!id(${widget_name}_is_animating)) {
             ESP_LOGD("fan", "Animation not running, skipping");
             return;
@@ -1200,7 +1200,7 @@ script:
       - lambda: |-
           ESP_LOGD("fan", "UPDATE_DIRECTION called");
           
-          // Обновляем направление только если анимация запущена
+          // Update direction only if animation is running
           if (!id(${widget_name}_is_animating)) {
             ESP_LOGD("fan", "Animation not running, skipping");
             return;
