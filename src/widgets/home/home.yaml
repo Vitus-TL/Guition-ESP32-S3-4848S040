@@ -323,7 +323,6 @@ text_sensor:
       then:
         - script.execute: parse_hourly_forecasts
 
-
   # Weather wind speed unit sensor
   - platform: homeassistant
     id: weather_wind_speed_unit_sensor
@@ -357,17 +356,45 @@ text_sensor:
               id: mac_address_info_state
               text: !lambda return id(wifi_mac_address).state.c_str();
 
+  # Temporarily disabled to make room for debug info
   # ESPHome version with compilation date
+  #- platform: template
+  #  name: "ESPHome Version"
+  #  id: esphome_version
+  #  lambda: |-
+  #    return {ESPHOME_VERSION};
+  #  on_value:
+  #    then:
+  #      - lvgl.label.update:
+  #          id: esphome_version_info_state
+  #          text: !lambda 'return id(esphome_version).state;'
+
   - platform: template
-    name: "ESPHome Version"
-    id: esphome_version
+    name: "CPU Frequency Info"
+    id: cpu_freq_info
     lambda: |-
-      return {ESPHOME_VERSION};
+      char buf[32];
+      snprintf(buf, sizeof(buf), "%.0f MHz", (int)id(cpu_freq_mhz).state);
+      return {buf};
     on_value:
-      then:
+      then: 
         - lvgl.label.update:
-            id: esphome_version_info_state
-            text: !lambda 'return id(esphome_version).state;'
+            id: cpu_freq_info_state
+            text: !lambda 'return id(cpu_freq_info).state;'
+
+# PSRAM version with compilation date
+  - platform: template
+    name: "PSRAM Info"
+    id: psram_info
+    lambda: |-
+      char buf[64];
+      snprintf(buf, sizeof(buf), "%d KB", (int)(id(psram_free).state / 1024));
+      return {buf};
+    on_value:
+      then: 
+        - lvgl.label.update:
+            id: psram_free_info_state
+            text: !lambda 'return id(psram_info).state;'
 
 lvgl:
 
@@ -677,7 +704,7 @@ lvgl:
                     - label:  
                         id: wifi_signal_info_label
                         x: 20
-                        y: 30
+                        y: 10
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -685,7 +712,7 @@ lvgl:
                     - label:  
                         id: wifi_signal_info_state
                         x: -20
-                        y: 30
+                        y: 10
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -693,7 +720,7 @@ lvgl:
                     - label:  
                         id: ip_address_info_label
                         x: 20
-                        y: 70
+                        y: 40
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -701,7 +728,7 @@ lvgl:
                     - label:  
                         id: ip_address_info_state
                         x: -20
-                        y: 70
+                        y: 40
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -709,7 +736,7 @@ lvgl:
                     - label:  
                         id: mac_address_info_label
                         x: 20
-                        y: 110
+                        y: 70
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -717,27 +744,75 @@ lvgl:
                     - label:  
                         id: mac_address_info_state
                         x: -20
-                        y: 110
+                        y: 70
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
                         text: "12:34:56:78:90:AB"
-                    - label:  
-                        id: esphome_version_info_label
+                    # - label:  
+                    #    id: esphome_version_info_label
+                    #    x: 20
+                    #    y: 150
+                    #    align: top_left
+                    #    text_font: nunito_18
+                    #    text_color: color_misty_blue
+                    #    text: "ESPHome Version:"
+                    # - label:  
+                    #    id: esphome_version_info_state
+                    #    x: -20
+                    #    y: 150
+                    #    align: top_right
+                    #    text_font: nunito_18
+                    #    text_color: color_misty_blue
+                    #    text: "2025.9.0"
+                    - label:
+                        id: cpu_freq_info_label
                         x: 20
-                        y: 150
+                        y: 100
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
-                        text: "ESPHome Version:"
-                    - label:  
-                        id: esphome_version_info_state
+                        text: "CPU frequency:"
+                    - label:
+                        id: cpu_freq_info_state
                         x: -20
-                        y: 150
+                        y: 100
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
-                        text: "2025.9.0"
+                        text: "999"
+                    - label:
+                        id: psram_free_info_label
+                        x: 20
+                        y: 130
+                        align: top_left
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "Free PSRAM:"
+                    - label:
+                        id: psram_free_info_state
+                        x: -20
+                        y: 130
+                        align: top_right
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "9999"
+                    - label:
+                        id: lvgl_buffer_display_info_label
+                        x: 20
+                        y: 160
+                        align: top_left
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "Graphics memory location:"
+                    - label:
+                        id: lvgl_buffer_display_info_state
+                        x: -20
+                        y: 160
+                        align: top_right
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "SOMEWHERE"
 
               - obj:
                   id: settings_widget

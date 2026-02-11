@@ -51,8 +51,6 @@ esphome:
   platformio_options:
     board_build.flash_mode: dio
     board_build.cmake_extra_args: -DCMAKE_C_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc
-    build_parallel_jobs: 12
-
 
   on_boot:
     - priority: 400
@@ -65,8 +63,6 @@ esphome:
         - lvgl.roller.update:
             id: backlight_settings_sleep_time_roller
             selected_index: !lambda return id(display_timeout);
-
-  compile_process_limit: 12  # Max parallel compiles
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -95,6 +91,7 @@ psram:
   mode: octal
   speed: 80MHz
 
+# The following five labels contain debug settings and should be disabled for normal operation
 
 logger:
   level: debug
@@ -102,6 +99,51 @@ logger:
     lvgl: info
   hardware_uart: UART0
 
+debug:
+  update_interval: 10s
+
+text_sensor:
+  - platform: debug
+    reset_reason:
+      name: "Reset Reason"
+    device:
+      name: "Device Info"
+  - platform: template
+    name: "LVGL Buffer Location"
+    id: lvgl_buffer_loc
+    update_interval: never  # Only runs once at startup
+    lambda: |-
+      size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+      size_t sram_free = heap_caps_get_free_size(MALLOC_CAP_DMA);
+      bool in_psram = (psram_free < 2000000) && (sram_free > 100000);
+      ESP_LOGD("display", "PSRAM: %dB, Buffer: %s", psram_free,
+               in_psram ? "PSRAM" : "SRAM");
+      // PLAIN STRING - NO BRACES
+      if (in_psram) {
+        return std::string("PSRAM");
+      } else {
+        return std::string("SRAM");
+      }
+
+sensor:
+  - platform: debug
+    loop_time:
+      name: "Loop Time"
+    cpu_frequency:
+      name: "CPU Frequency"
+      id: cpu_freq_mhz
+    free:
+      name: "Heap Free"
+      id: heap_free  
+    block:
+      name: "Heap Max Block"
+      id: max_heap_block
+    psram:
+      name: "Free PSRAM"
+      id: psram_free 
+
+runtime_stats:
+  log_interval: 60s
 
 api:
   encryption:
