@@ -804,7 +804,7 @@ lvgl:
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
-                        text: "Graphics memory location:"
+                        text: "Graphics memory buffer in:"
                     - label:
                         id: lvgl_buffer_display_info_state
                         x: -20
