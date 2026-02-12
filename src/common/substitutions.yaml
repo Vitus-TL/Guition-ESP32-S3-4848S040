@@ -74,6 +74,8 @@ comfort_preset_icon:        "\U000F04B9"
 home_preset_icon:           "\U000F02DC"
 sleep_preset_icon:          "\U000F0904"
 activity_preset_icon:       "\U000F046E"
+vacation_preset_icon:       "\U000F0092"
+no_frost_preset_icon:       "\U000F14E3"
 smart_preset_icon:          "\U000F09D1"
 
 fan_on_icon:                "\U000F0210"

@@ -244,6 +244,7 @@
   ]
 
 # iCONS FONT
+# Check https://pictogrammers.com/library/mdi/ for other icons to use
 
 - file: "assets/fonts/materialdesignicons-webfont.ttf"
   id: mdi_icons_24
@@ -266,6 +267,8 @@
     "\U000F02DC", # preset home
     "\U000F0904", # preset sleep
     "\U000F046E", # preset activity
+    "\U000F0092", # preset vacation
+    "\U000F14E3", # preset no_frost
     "\U000F09D1", # present smart
     "\U000F0210", # fan on
     "\U000F081D", # fan off

@@ -867,6 +867,12 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_activity_preset_label
                 text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
       - if:
           condition:
             lambda: 'return x == "eco";'
@@ -891,6 +897,12 @@ text_sensor:
                 text_color: color_misty_blue        
             - lvgl.label.update:
                 id: climate_activity_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
                 text_color: color_misty_blue
       - if:
           condition:
@@ -917,6 +929,12 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_activity_preset_label
                 text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
       - if:
           condition:
             lambda: 'return x == "away";'
@@ -941,6 +959,12 @@ text_sensor:
                 text_color: color_misty_blue        
             - lvgl.label.update:
                 id: climate_activity_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
                 text_color: color_misty_blue
       - if:
           condition:
@@ -967,6 +991,12 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_activity_preset_label
                 text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
       - if:
           condition:
             lambda: 'return x == "boost";'
@@ -992,9 +1022,15 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_activity_preset_label
                 text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
       - if:
           condition:
-            lambda: 'return x == "sleep";'
+            lambda: 'return x == "asleep";' # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
           then:
             - lvgl.label.update:
                 id: climate_eco_preset_label
@@ -1016,6 +1052,12 @@ text_sensor:
                 text_color: color_dark_blue        
             - lvgl.label.update:
                 id: climate_activity_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
                 text_color: color_misty_blue
       - if:
           condition:
@@ -1042,6 +1084,74 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_activity_preset_label
                 text_color: color_crimson
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
+      - if:
+          condition:
+            lambda: 'return x == "vacation";'
+          then:
+            - lvgl.label.update:
+                id: climate_eco_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_home_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_away_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_comfort_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_boost_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_sleep_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_activity_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_yellow #Some sunny colour
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_misty_blue
+      - if:
+          condition:
+            lambda: 'return x == "no_frost";'
+          then:
+            - lvgl.label.update:
+                id: climate_eco_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_home_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_away_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_comfort_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_boost_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_sleep_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_activity_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_vacation_preset_label
+                text_color: color_misty_blue
+            - lvgl.label.update:
+                id: climate_no_frost_preset_label
+                text_color: color_dark_blue
 
 
   # CLIMATE FAN MODES
@@ -1623,7 +1733,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: sleep
+                          preset_mode: asleep # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
 
               # ACTIVITY
               - obj:
@@ -1648,6 +1758,55 @@ lvgl:
                         data: 
                           entity_id: "${climate_entity}"
                           preset_mode: activity
+
+              # VACATION
+              - obj:
+                  id: climate_vacation_preset_btn
+                  hidden: true
+                  width: 35
+                  height: 35
+                  pad_all: 0
+                  bg_opa: transp
+                  border_opa: transp
+                  shadow_opa: transp
+                  widgets:
+                    - label:
+                        id: climate_vacation_preset_label
+                        align: center
+                        text_font: mdi_icons_24
+                        text_color: color_misty_blue
+                        text: "${vacation_preset_icon}"
+                  on_press:
+                    - homeassistant.action:
+                        action: climate.set_preset_mode
+                        data:
+                          entity_id: "${climate_entity}"
+                          preset_mode: vacation
+
+              # NO_FROST
+              - obj:
+                  id: climate_no_frost_preset_btn
+                  hidden: true
+                  width: 35
+                  height: 35
+                  pad_all: 0
+                  bg_opa: transp
+                  border_opa: transp
+                  shadow_opa: transp
+                  widgets:
+                    - label:
+                        id: climate_no_frost_preset_label
+                        align: center
+                        text_font: mdi_icons_24
+                        text_color: color_misty_blue
+                        text: "${no_frost_preset_icon}"
+                  on_press:
+                    - homeassistant.action:
+                        action: climate.set_preset_mode
+                        data:
+                          entity_id: "${climate_entity}"
+                          preset_mode: no_frost
+
 
         # TEMPERATURE WIDGET
         - obj:
@@ -3291,13 +3450,27 @@ script:
             lv_obj_add_flag(id(climate_home_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
-          // SLEEP
-          if (presets_str.find("sleep") != std::string::npos) {
+          // SLEEP FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
+          if (presets_str.find("asleep") != std::string::npos) {
             lv_obj_clear_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
-          
+         
+          // VACATION
+          if (presets_str.find("vacation") != std::string::npos) {
+            lv_obj_clear_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
+          } else {
+            lv_obj_add_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
+          }
+
+          // NO_FROST
+          if (presets_str.find("no_frost") != std::string::npos) {
+            lv_obj_clear_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
+          } else {
+            lv_obj_add_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
+          }
+
           // ACTIVITY
           if (presets_str.find("activity") != std::string::npos) {
             lv_obj_clear_flag(id(climate_activity_preset_btn), LV_OBJ_FLAG_HIDDEN);
