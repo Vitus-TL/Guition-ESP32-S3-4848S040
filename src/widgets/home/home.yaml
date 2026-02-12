@@ -117,6 +117,7 @@ switch:
           id(display_lock) = false;
       - script.execute: display_block_buttons
 
+
 time:
   - platform: sntp
     id: sntp_time
@@ -412,26 +413,21 @@ text_sensor:
             id: sram_free_info_state
             text: !lambda 'return id(sram_info).state;'
 
-  # LVGL Buffer detection + display
-  - platform: template
-    name: "LVGL Buffer Info"
-    id: lvgl_display_buffer_info
-    update_interval: never
-    lambda: |-
-      size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
-      size_t sram_free = heap_caps_get_free_size(MALLOC_CAP_DMA);
-      bool in_psram = (psram_free < 2000000) && (sram_free > 100000);
-      ESP_LOGD("display", "PSRAM: %dB, Buffer: %s", psram_free,
-               in_psram ? "PSRAM" : "SRAM");
-      // Return result directly
-      return std::string(in_psram ? "PSRAM" : "SRAM");
-    on_value:
-      then:
-        - lvgl.label.update:
-            id: lvgl_display_buffer_info_state
-            text: !lambda 'return id(lvgl_display_buffer_info).state;'
 
 lvgl:
+
+  on_boot:  # ← Runs ONCE after LVGL fully initializes
+    then:
+      - delay: 3s  # Wait for LVGL initialization
+      - lambda: |-
+          size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+          size_t sram_free = heap_caps_get_free_size(MALLOC_CAP_DMA);
+          bool in_psram = (psram_free < 2000000) && (sram_free > 100000);
+          std::string result = in_psram ? "in PSRAM" : "in SRAM";
+          ESP_LOGD("display", "LVGL Buffer: %s (PSRAM: %dB, SRAM: %dB)",
+                   result.c_str(), psram_free, sram_free);
+          // Update label directly
+          lv_label_set_text_fmt(id(lvgl_display_buffer_info_state), "%s", result.c_str());
 
   on_idle:
     timeout: !lambda "return (id(display_timeout_backlight).state * 60 * 1000);"
