@@ -1,5 +1,12 @@
 # TEXT FONT
 
+- file: "gfonts://Roboto@regular"
+  id: font_1
+  size: 36
+  # iNext reduces memory footprint from 500KB to 60KB
+  glyphsets:
+      - GF_Latin_Kernel
+
 - file: "assets/fonts/Nunito-SemiBold.ttf"
   id: nunito_16
   size: 16
