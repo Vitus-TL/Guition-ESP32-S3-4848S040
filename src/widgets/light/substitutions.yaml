@@ -5,9 +5,9 @@ light_entity_2: "light.on_off_plug_1_9"
 light_entity_3: "light.on_off_plug_1_10"
 light_entity_4: "light.color_temperature_light_1"
 
-light_widget_name_1: "Schermerlampen"
-light_widget_name_2: "Staande_Schermerlampen" # FIXME: code does not support whitespaces
-light_widget_name_3: "Licht_achter_de_bank"
+light_widget_name_1: "Licht_achter_de_bank"
+light_widget_name_2: "Schermerlampen"
+light_widget_name_3: "Staande_Schermerlampen"
 light_widget_name_4: "Licht_achter_bed"
 
 
