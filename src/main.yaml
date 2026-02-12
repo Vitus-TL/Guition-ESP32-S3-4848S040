@@ -67,6 +67,7 @@ esphome:
 esp32:
   board: esp32-s3-devkitc-1
   variant: esp32s3
+  cpu_frequency: 240MHz  # Force runtime frequency: bad for battery life and CPU temperature, good for performance
   flash_size: 16MB
   framework:
     type: esp-idf
