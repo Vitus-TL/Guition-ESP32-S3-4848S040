@@ -108,22 +108,6 @@ text_sensor:
       name: "Reset Reason"
     device:
       name: "Device Info"
-  - platform: template
-    name: "LVGL Buffer Location"
-    id: lvgl_buffer_loc
-    update_interval: never  # Only runs once at startup
-    lambda: |-
-      size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
-      size_t sram_free = heap_caps_get_free_size(MALLOC_CAP_DMA);
-      bool in_psram = (psram_free < 2000000) && (sram_free > 100000);
-      ESP_LOGD("display", "PSRAM: %dB, Buffer: %s", psram_free,
-               in_psram ? "PSRAM" : "SRAM");
-      // PLAIN STRING - NO BRACES
-      if (in_psram) {
-        return std::string("PSRAM");
-      } else {
-        return std::string("SRAM");
-      }
 
 sensor:
   - platform: debug
@@ -131,10 +115,10 @@ sensor:
       name: "Loop Time"
     cpu_frequency:
       name: "CPU Frequency"
-      id: cpu_freq_mhz
+      id: cpu_freq_hz
     free:
       name: "Heap Free"
-      id: heap_free  
+      id: sram_free  
     block:
       name: "Heap Max Block"
       id: max_heap_block

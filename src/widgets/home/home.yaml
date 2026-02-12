@@ -373,8 +373,10 @@ text_sensor:
     name: "CPU Frequency Info"
     id: cpu_freq_info
     lambda: |-
-      char buf[32];
-      snprintf(buf, sizeof(buf), "%.0f MHz", (int)id(cpu_freq_mhz).state);
+      char buf[64];
+      float cpu_hz = id(cpu_freq_hz).state;      // Raw Hz from debug
+      int cpu_freq_mhz = (int)(cpu_hz / 1000000.0f);   // Convert to MHz
+      snprintf(buf, sizeof(buf), "%d MHz", cpu_freq_mhz);
       return {buf};
     on_value:
       then: 
@@ -382,7 +384,7 @@ text_sensor:
             id: cpu_freq_info_state
             text: !lambda 'return id(cpu_freq_info).state;'
 
-# PSRAM version with compilation date
+# PSRAM free in KB
   - platform: template
     name: "PSRAM Info"
     id: psram_info
@@ -395,6 +397,39 @@ text_sensor:
         - lvgl.label.update:
             id: psram_free_info_state
             text: !lambda 'return id(psram_info).state;'
+
+# SRAM free heap in KB
+  - platform: template
+    name: "SRAM Info"
+    id: sram_info
+    lambda: |-
+      char buf[64];
+      snprintf(buf, sizeof(buf), "%d KB", (int)(id(sram_free).state / 1024));
+      return {buf};
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: sram_free_info_state
+            text: !lambda 'return id(sram_info).state;'
+
+  # LVGL Buffer detection + display
+  - platform: template
+    name: "LVGL Buffer Info"
+    id: lvgl_display_buffer_info
+    update_interval: never
+    lambda: |-
+      size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+      size_t sram_free = heap_caps_get_free_size(MALLOC_CAP_DMA);
+      bool in_psram = (psram_free < 2000000) && (sram_free > 100000);
+      ESP_LOGD("display", "PSRAM: %dB, Buffer: %s", psram_free,
+               in_psram ? "PSRAM" : "SRAM");
+      // Return result directly
+      return std::string(in_psram ? "PSRAM" : "SRAM");
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: lvgl_display_buffer_info_state
+            text: !lambda 'return id(lvgl_display_buffer_info).state;'
 
 lvgl:
 
@@ -704,7 +739,7 @@ lvgl:
                     - label:  
                         id: wifi_signal_info_label
                         x: 20
-                        y: 10
+                        y: 5
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -712,7 +747,7 @@ lvgl:
                     - label:  
                         id: wifi_signal_info_state
                         x: -20
-                        y: 10
+                        y: 5
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -720,7 +755,7 @@ lvgl:
                     - label:  
                         id: ip_address_info_label
                         x: 20
-                        y: 40
+                        y: 35
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -728,7 +763,7 @@ lvgl:
                     - label:  
                         id: ip_address_info_state
                         x: -20
-                        y: 40
+                        y: 35
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -736,7 +771,7 @@ lvgl:
                     - label:  
                         id: mac_address_info_label
                         x: 20
-                        y: 70
+                        y: 65
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -744,7 +779,7 @@ lvgl:
                     - label:  
                         id: mac_address_info_state
                         x: -20
-                        y: 70
+                        y: 65
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -768,7 +803,7 @@ lvgl:
                     - label:
                         id: cpu_freq_info_label
                         x: 20
-                        y: 100
+                        y: 95
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -776,15 +811,31 @@ lvgl:
                     - label:
                         id: cpu_freq_info_state
                         x: -20
-                        y: 100
+                        y: 95
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
                         text: "999"
                     - label:
+                        id: sram_free_info_label
+                        x: 20
+                        y: 125
+                        align: top_left
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "Free SRAM:"
+                    - label:
+                        id: sram_free_info_state
+                        x: -20
+                        y: 125
+                        align: top_right
+                        text_font: nunito_18
+                        text_color: color_misty_blue
+                        text: "0"
+                    - label:
                         id: psram_free_info_label
                         x: 20
-                        y: 130
+                        y: 155
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
@@ -792,23 +843,23 @@ lvgl:
                     - label:
                         id: psram_free_info_state
                         x: -20
-                        y: 130
+                        y: 155
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
-                        text: "9999"
+                        text: "0"
                     - label:
-                        id: lvgl_buffer_display_info_label
+                        id: lvgl_display_buffer_info_label
                         x: 20
-                        y: 160
+                        y: 185
                         align: top_left
                         text_font: nunito_18
                         text_color: color_misty_blue
-                        text: "Graphics memory buffer in:"
+                        text: "Graphics buffer:"
                     - label:
-                        id: lvgl_buffer_display_info_state
+                        id: lvgl_display_buffer_info_state
                         x: -20
-                        y: 160
+                        y: 185
                         align: top_right
                         text_font: nunito_18
                         text_color: color_misty_blue
