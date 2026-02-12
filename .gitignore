@@ -3,4 +3,5 @@
 # You can modify this file to suit your needs.
 src/.esphome/
 src/secrets.yaml
+src/translations/nl.yaml
 .gitignore
