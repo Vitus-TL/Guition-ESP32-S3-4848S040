@@ -49,6 +49,7 @@ esphome:
     - <sstream>
     - <algorithm>
   platformio_options:
+    board_build.f_cpu: 240000000L
     board_build.flash_mode: dio
     board_build.cmake_extra_args: -DCMAKE_C_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc
 
@@ -63,23 +64,38 @@ esphome:
         - lvgl.roller.update:
             id: backlight_settings_sleep_time_roller
             selected_index: !lambda return id(display_timeout);
+    #    - priority: 600.0 # AFTER_WIFI (200) but BEFORE sensors/components (~500). PLL_D2 stable, PM configurable.
+    #  then:
+    #    - lambda: |-
+    #        esp_pm_lock_acquire(ESP_PM_CPU_FREQ_MAX);
+    #        esp_pm_config_t pm = {.max_freq_mhz=240, .min_freq_mhz=80};
+    #        esp_pm_configure(&pm);
 
 esp32:
-  board: esp32-s3-devkitc-1
+  # board: esp32-s3-devkitc-1
+  # board: 4d_systems_esp32s3_gen4_r8n16
+  board: esp32s3box
   variant: esp32s3
-  cpu_frequency: 240MHz  # Force runtime frequency: bad for battery life and CPU temperature, good for performance
+  cpu_frequency: 240MHz  # Defaults at 160Mhz
   flash_size: 16MB
+  partitions: "common/partitions_16mb.csv"
   framework:
     type: esp-idf
     advanced:
       loop_task_stack_size: 8192
     sdkconfig_options:
-      CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+      CONFIG_ESP_DEFAULT_CPU_FREQ_240: "y"
+      # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_160: "n"
+      # CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ: "240"
+      CONFIG_PM_ENABLE: "n"  
       # CONFIG_SPIRAM_TRY_ALLOCATE_WIFI_LWIP: y
       # CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
       # CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
       # CONFIG_ESP_MAIN_TASK_STACK_SIZE: "16384"
       # CONFIG_ESP_MAIN_TASK_STACK_SIZE: "65536"
+      CONFIG_SPIRAM_MODE_OCT: "y" 
+      CONFIG_SPIRAM_SPEED_80M: "y"  
       CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
       CONFIG_SPIRAM_RODATA: y
       CONFIG_ESP_TASK_WDT_TIMEOUT_S: "60"
@@ -87,6 +103,11 @@ esp32:
       # CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS: "y"
       # CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS: "y"
       # CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER: "y"
+      CONFIG_LOG_DEFAULT_LEVEL: "DEBUG" 
+      CONFIG_LOG_MAXIMUM_LEVEL: "VERBOSE"
+      CONFIG_ESP_ERR_TO_NAME_LOOKUP: "y"
+      CONFIG_ESPTOOLPY_FLASHSIZE_16MB: "y"
+      CONFIG_PARTITION_TABLE_CUSTOM: "common/partitions_16mb.csv"
 
 psram:
   mode: octal
@@ -96,7 +117,12 @@ psram:
 
 logger:
   level: debug
+#  level: VERY_VERBOSE
   logs:
+    # component: NONE
+    esp_pm: DEBUG
+    esp_pm_trace: DEBUG
+    ota: INFO
     lvgl: info
   hardware_uart: UART0
 
@@ -126,6 +152,23 @@ sensor:
     psram:
       name: "Free PSRAM"
       id: psram_free 
+  - platform: template
+    id: sram_total
+    name: "Total SRAM KB"
+    unit_of_measurement: "KB"
+    accuracy_decimals: 0
+    lambda: |-
+      size_t total_dram = heap_caps_get_total_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);
+      return (int)(total_dram);
+  - platform: template
+    id: psram_total
+    name: "Total PSRAM KB"
+    unit_of_measurement: "KB"
+    accuracy_decimals: 0
+    lambda: |-
+      // Work-around until I can figure out how to obtain real values
+      constexpr int PSRAM_SIZE = 8388608;  // N16R8 standard
+      return PSRAM_SIZE;
 
 runtime_stats:
   log_interval: 60s
