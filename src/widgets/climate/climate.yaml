@@ -334,7 +334,6 @@ text_sensor:
           then:
             - lvgl.widget.show: climate_target_temperature_single
             - lvgl.widget.hide: climate_target_temperature_dual
-
             - lvgl.widget.hide: climate_arc_background
             - lvgl.widget.hide: climate_arc_knob
             - lvgl.widget.hide: climate_arc_base_cool
@@ -395,7 +394,6 @@ text_sensor:
           then:
             - lvgl.widget.show: climate_target_temperature_single
             - lvgl.widget.hide: climate_target_temperature_dual
-            
             - lvgl.widget.hide: climate_arc_background
             - lvgl.widget.hide: climate_arc_knob
             - lvgl.widget.hide: climate_arc_base_heat
@@ -459,7 +457,6 @@ text_sensor:
           then:
             - lvgl.widget.hide: climate_target_temperature_single
             - lvgl.widget.show: climate_target_temperature_dual
-
             - lvgl.widget.hide: climate_arc_background
             - lvgl.widget.hide: climate_arc_knob
             - lvgl.widget.show: climate_arc_base_heat
@@ -569,7 +566,6 @@ text_sensor:
           then:
             - lvgl.widget.show: climate_target_temperature_single
             - lvgl.widget.hide: climate_target_temperature_dual
-
             - lvgl.widget.show: climate_arc_background
             - lvgl.widget.show: climate_arc_knob
             - lvgl.widget.hide: climate_arc_base_cool
@@ -629,7 +625,6 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_target_temperature_measurement
                 text_color: color_yellow
-
             - lvgl.label.update:
                 id: climate_heat_mode_label
                 text_color: color_misty_blue
@@ -671,7 +666,6 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_target_temperature_measurement
                 text_color: color_green
-
             - lvgl.label.update:
                 id: climate_heat_mode_label
                 text_color: color_misty_blue
@@ -755,7 +749,6 @@ text_sensor:
             - lvgl.label.update:
                 id: climate_target_temperature_measurement
                 text_color: color_misty_blue
-
             - lvgl.label.update:
                 id: climate_heat_mode_label
                 text_color: color_misty_blue
@@ -809,6 +802,7 @@ text_sensor:
             if (a == "drying")       return color_yellow;
             if (a == "fan")          return color_mint;
             if (a == "heating")      return color_red;
+            if (a == "auto")         return color_orange;
             if (a == "idle")         return color_misty_blue;
             if (a == "off")          return color_steel_blue;
             if (a == "preheating")   return color_deep_orange;
@@ -1030,7 +1024,7 @@ text_sensor:
                 text_color: color_misty_blue
       - if:
           condition:
-            lambda: 'return x == "asleep";' # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
+            lambda: 'return x == "${sleep_preset}";' # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
           then:
             - lvgl.label.update:
                 id: climate_eco_preset_label
@@ -1151,7 +1145,7 @@ text_sensor:
                 text_color: color_misty_blue
             - lvgl.label.update:
                 id: climate_no_frost_preset_label
-                text_color: color_dark_blue
+                text_color: color_steel_blue
 
 
   # CLIMATE FAN MODES
@@ -1733,7 +1727,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: asleep # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
+                          preset_mode: ${sleep_preset} # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
 
               # ACTIVITY
               - obj:
@@ -3451,7 +3445,7 @@ script:
           }
           
           // SLEEP FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
-          if (presets_str.find("asleep") != std::string::npos) {
+          if (presets_str.find("${sleep_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
