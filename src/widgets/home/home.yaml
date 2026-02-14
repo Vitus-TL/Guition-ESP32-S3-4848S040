@@ -391,7 +391,7 @@ text_sensor:
     id: psram_info
     lambda: |-
       char buf[64];
-      snprintf(buf, sizeof(buf), "%d KB", (int)(id(psram_free).state / 1024));
+      snprintf(buf, sizeof(buf), "%d/%d KB", (int)(id(psram_free).state / 1024), (int)(id(psram_total).state / 1024));
       return {buf};
     on_value:
       then: 
@@ -405,7 +405,8 @@ text_sensor:
     id: sram_info
     lambda: |-
       char buf[64];
-      snprintf(buf, sizeof(buf), "%d KB", (int)(id(sram_free).state / 1024));
+      // snprintf(buf, sizeof(buf), "%d KB", (int)(id(sram_free).state / 1024));
+      snprintf(buf, sizeof(buf), "%d/%d KB", (int)(id(sram_free).state / 1024), (int)(id(sram_total).state / 1024));
       return {buf};
     on_value:
       then:
