@@ -24,7 +24,6 @@ external_components:
   - source: github://alaltitov/esphome@dev
     components: [i18n]
 
-
 i18n:
   id: i18n_translations
   sources:
@@ -51,6 +50,7 @@ esphome:
   platformio_options:
     board_build.f_cpu: 240000000L
     board_build.flash_mode: dio
+    board_build.filesystem: littlefs
     board_build.cmake_extra_args: -DCMAKE_C_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc
 
   on_boot:

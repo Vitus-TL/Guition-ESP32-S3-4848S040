@@ -1,7 +1,7 @@
-# Name,   Type, SubType, Offset,   Size,     Flags
+# Name,   Type, SubType, Offset,   Size,      Flags
 nvs,      data, nvs,     0x009000, 0x005000,
 otadata,  data, ota,     0x00e000, 0x002000,
-app0,     app,  ota_0,   0x010000, 0x7E0000,
-app1,     app,  ota_1,   0x7F0000, 0x7E0000,
-eeprom,   data, 0x99,    0xFD0000, 0x010000,
-spiffs,   data, spiffs,  0xFE0000, 0x020000
+app0,     app,  ota_0,   0x010000, 0x600000,
+app1,     app,  ota_1,   0x610000, 0x600000,
+littlefs, data, littlefs,  0xC10000, 0x200000,
+eeprom,   data, 0x99,    0xE10000, 0x010000,
