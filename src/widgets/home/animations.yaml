@@ -1460,3 +1460,21 @@ script:
       - script.execute: log_widgets_status
       - lambda: |-
           id(is_animating) = false;
+
+  # 13 MEDIAPLAYER => HOME
+  - id: animate_mediaplayer_to_home
+    then:
+      - lambda: |-
+          lv_obj_set_style_opa(id(circle_home_widget), 255, 0);
+          id(is_animating) = false;
+    # - script.execute: log_widgets_status
+
+  # 14 HOME => MEDIAPLAYER
+  - id: animate_home_to_mediaplayer
+    then:
+      - lambda: |-
+          lv_obj_set_style_opa(id(circle_home_widget), 255, 0);
+          id(is_animating) = false;
+  # - script.execute: log_widgets_status
+
+

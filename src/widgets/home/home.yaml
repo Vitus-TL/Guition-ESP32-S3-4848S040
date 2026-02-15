@@ -52,7 +52,7 @@ globals:
 
   - id: current_mode
     type: int
-    initial_value: '0'  # 0=HOME, 1=WEATHER, 2=INFO, 3=SETTINGS
+    initial_value: '0'  # 0=HOME, 1=WEATHER, 2=INFO, 3=SETTINGS 4=MEDIAPLAYER
 
   - id: is_animating
     type: bool
@@ -515,6 +515,15 @@ lvgl:
                   align: right_mid
                   x: -100
                   text: "${shield_arming_icon}"
+                  text_color: color_steel_blue
+                  text_font: mdi_icons_24
+
+              # Media player status
+              - label:
+                  id: media_player_status
+                  align: left_mid
+                  x: 100
+                  text: "${media_player_icon}"
                   text_color: color_steel_blue
                   text_font: mdi_icons_24
 
@@ -1470,7 +1479,7 @@ lvgl:
                         target_mode: 0
 
               - button:
-                  id: music_widget_btn
+                  id: media_player_widget_btn
                   clickable: true
                   x: 160
                   width: 50
@@ -1483,11 +1492,11 @@ lvgl:
                         align: center
                         text_color: color_misty_blue
                         text_font: mdi_icons_28
-                        text: "${music_icon}"
+                        text: "${media_player_icon}"
                   on_click:
                     - script.execute:
                         id: switch_to_mode
-                        target_mode: 5
+                        target_mode: 4
 
               - button:
                   id: weather_widget_btn
@@ -1844,7 +1853,7 @@ script:
                 text_color: color_steel_blue
             - lvgl.button.update: { id: backlight_brightness_off_btn, clickable: true }
             - lvgl.button.update: { id: home_widget_btn, clickable: true }
-            - lvgl.button.update: { id: music_widget_btn, clickable: true }
+            - lvgl.button.update: { id: media_player_widget_btn, clickable: true }
             - lvgl.button.update: { id: weather_widget_btn, clickable: true }
             - lvgl.button.update: { id: info_widget_btn, clickable: true }
             - lvgl.button.update: { id: settings_widget_btn, clickable: true }
@@ -1861,7 +1870,7 @@ script:
                 text_color: color_red
             - lvgl.button.update: { id: backlight_brightness_off_btn, clickable: false }
             - lvgl.button.update: { id: home_widget_btn, clickable: false }
-            - lvgl.button.update: { id: music_widget_btn, clickable: false }
+            - lvgl.button.update: { id: media_player_widget_btn, clickable: false }
             - lvgl.button.update: { id: weather_widget_btn, clickable: false }
             - lvgl.button.update: { id: info_widget_btn, clickable: false }
             - lvgl.button.update: { id: settings_widget_btn, clickable: false }

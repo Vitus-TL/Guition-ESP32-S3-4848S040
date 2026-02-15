@@ -32,7 +32,7 @@ globals:
     initial_value: '""'
 
 online_image:
-  - url: "https://www.example.com/example.jpeg"
+  - url: ${online_image}
     format: JPEG
     type: RGB565
     resize: 120x120
