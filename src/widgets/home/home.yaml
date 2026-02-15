@@ -44,7 +44,6 @@ globals:
   - id: forecast_hourly_conditions
     type: std::string[15]
 
-
   - id: current_language
     type: std::string
     initial_value: '"${secondary_language}"'
@@ -136,7 +135,6 @@ time:
 
 
 sensor:
-
   # Weather forecast daily count
   - platform: homeassistant
     id: weather_forecast_daily_count
@@ -370,6 +368,7 @@ text_sensor:
   #          id: esphome_version_info_state
   #          text: !lambda 'return id(esphome_version).state;'
 
+# CPU Frequency in Mhz
   - platform: template
     name: "CPU Frequency Info"
     id: cpu_freq_info
@@ -518,17 +517,8 @@ lvgl:
                   text_color: color_steel_blue
                   text_font: mdi_icons_24
 
-              # Media player status
-              - label:
-                  id: media_player_status
-                  align: left_mid
-                  x: 100
-                  text: "${media_player_icon}"
-                  text_color: color_steel_blue
-                  text_font: mdi_icons_24
 
         # weather
-
         - obj:
             id: main_widget_background
             hidden: false
@@ -1207,6 +1197,33 @@ lvgl:
                                     text_color: color_misty_blue
                                     text: "${ceiling_lights_icon}"
 
+
+                    # MEDIA PLAYER BUTTON
+                    # - lvgl.button:
+                    #    id: media_player_btn
+                    #    x: 160
+                    #    width: 50
+                    #    height: 50
+                    #    clickable: true
+                    #    bg_opa: TRANSPARENT
+                    #    shadow_opa: TRANSPARENT
+                    #    border_opa: TRANSPARENT
+                    #    pressed:
+                    #      bg_color: color_steel_blue
+                    #      shadow_width: 4
+                    #    widgets:
+                    #      - lvgl.label:
+                    #        align: CENTER
+                    #        text_color: color_misty_blue
+                    #        text_font: mdi_icons_28
+                    #        text: "${media_player_icon}"
+                    #    on_click:
+                    #      # - lvgl.page.show: media_player_page
+                    #      - script.execute:
+                    #        id: switch_to_mode
+                    #        target_mode: 4
+
+
                     # DEVICES BUTTON
                     - obj:
                         id: home_devices_btn_bg
@@ -1401,7 +1418,7 @@ lvgl:
                           - container:
                               hidden: true
 
-        # SYSTEM BUTTONS (DOWN) 
+        # SYSTEM BUTTONS (DOWN UNDER) 
         - obj:
             id: menu_controls_background
             x: 0
@@ -1457,7 +1474,6 @@ lvgl:
                     - light.turn_off: display_backlight
                     - lvgl.pause:
 
-
               - button:
                   id: home_widget_btn
                   clickable: true
@@ -1494,9 +1510,10 @@ lvgl:
                         text_font: mdi_icons_28
                         text: "${media_player_icon}"
                   on_click:
-                    - script.execute:
-                        id: switch_to_mode
-                        target_mode: 4
+                    - lvgl.page.show: media_player_page
+                    # - script.execute:
+                    #    id: switch_to_mode
+                    #    target_mode: 4
 
               - button:
                   id: weather_widget_btn
