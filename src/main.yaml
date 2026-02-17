@@ -11,7 +11,7 @@ packages:
   # alarm_panel: !include widgets/alarm_panel/config.yaml
   fan: !include widgets/fan/config.yaml
 
-
+# <<: !include common/diagnostics.yaml # Hook for debug info
 substitutions: !include common/substitutions.yaml
 image: !include common/image.yaml
 font: !include common/fonts.yaml
@@ -40,6 +40,7 @@ i18n:
   use_psram: true
   buffer_size: "512"
 
+
 esphome:
   name: ${display_name}
   friendly_name: ${display_friendly_name}
@@ -47,13 +48,22 @@ esphome:
   includes:
     - <sstream>
     - <algorithm>
+    - common/littlefs_test.h
   platformio_options:
     board_build.f_cpu: 240000000L
     board_build.flash_mode: dio
     board_build.filesystem: littlefs
+    board_build.partitions: ../../../common/partitions_16mb.csv
+    upload_speed: 921600 
+    build_flags:
+      - -DSTORAGE_NAMESPACE="littlefs"
     board_build.cmake_extra_args: -DCMAKE_C_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc
-
   on_boot:
+    - priority: -100
+      then:
+        - lambda: |-
+            static auto *comp = new LittleFSTest(); //LittleFS debug code
+            comp->setup();
     - priority: 400
       then:
         - lambda: |-
@@ -64,7 +74,8 @@ esphome:
         - lvgl.roller.update:
             id: backlight_settings_sleep_time_roller
             selected_index: !lambda return id(display_timeout);
-    #    - priority: 600.0 # AFTER_WIFI (200) but BEFORE sensors/components (~500). PLL_D2 stable, PM configurable.
+    # Debug code for CPU frequency init
+    # - priority: 600.0 # AFTER_WIFI (200) but BEFORE sensors/components (~500). PLL_D2 stable, PM configurable.
     #  then:
     #    - lambda: |-
     #        esp_pm_lock_acquire(ESP_PM_CPU_FREQ_MAX);
@@ -73,12 +84,11 @@ esphome:
 
 esp32:
   # board: esp32-s3-devkitc-1
-  # board: 4d_systems_esp32s3_gen4_r8n16
   board: esp32s3box
   variant: esp32s3
   cpu_frequency: 240MHz  # Defaults at 160Mhz
   flash_size: 16MB
-  partitions: "common/partitions_16mb.csv"
+  # partitions: "common/partitions_16mb.csv" LittleFS binary doesn't get build when puting the option here
   framework:
     type: esp-idf
     advanced:
