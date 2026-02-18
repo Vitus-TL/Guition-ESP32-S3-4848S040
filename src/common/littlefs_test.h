@@ -1,21 +1,29 @@
 #include "esphome.h"
-#include <cstdio>
+#include <stdio.h>
 
 class LittleFSTest : public Component {
  public:
   void setup() override {
-    ESP_LOGI("littlefs_test", "Testing LittleFS...");
-
+    ESP_LOGI("LittleFS", "=== Testing filesystem ===");
+    
+    // Simple write test
     FILE *f = fopen("/littlefs/test.txt", "w");
-    if (!f) {
-      ESP_LOGE("littlefs_test", "Failed to open file for writing on LittleFS");
-      return;
+    if (f) {
+      fprintf(f, "LittleFS OK %lu\n", millis());
+      fclose(f);
+      ESP_LOGI("LittleFS", "✅ Write OK");
+      
+      // Read back verify
+      f = fopen("/littlefs/test.txt", "r");
+      if (f) {
+        char buf[64];
+        fgets(buf, sizeof(buf), f);
+        fclose(f);
+        ESP_LOGI("LittleFS", "✅ Read OK: %s", buf);
+      }
+    } else {
+      ESP_LOGE("LittleFS", "❌ Partition not mounted or inaccessible");
     }
-    const char *msg = "LittleFS OK\n";
-    fwrite(msg, 1, strlen(msg), f);
-    fclose(f);
-    ESP_LOGI("littlefs_test", "Wrote test file on LittleFS");
   }
-
-  void loop() override {}
 };
+
