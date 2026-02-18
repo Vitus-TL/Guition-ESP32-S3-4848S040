@@ -23,6 +23,11 @@ http_request:
 external_components:
   - source: github://alaltitov/esphome@dev
     components: [i18n]
+  #  - source:
+  #    type: git
+  #    url: https://github.com/joltwallet/esp_littlefs.git
+  #  components: [littlefs]
+  #   ref: v1.20.4
 
 i18n:
   id: i18n_translations
@@ -74,6 +79,17 @@ esphome:
         - lvgl.roller.update:
             id: backlight_settings_sleep_time_roller
             selected_index: !lambda return id(display_timeout);
+    - priority: 600  # Early, before other components
+      then:
+        - lambda: |-
+            #include "esp_littlefs.h"
+            esp_vfs_littlefs_conf_t conf = {
+                .base_path = "/littlefs",
+                .partition_label = "littlefs",
+                .format_if_mount_failed = true,
+            };
+            esp_err_t ret = esp_vfs_littlefs_register(&conf);
+            ESP_LOGD("boot", "LittleFS ret=%s", ret);
     # Debug code for CPU frequency init
     # - priority: 600.0 # AFTER_WIFI (200) but BEFORE sensors/components (~500). PLL_D2 stable, PM configurable.
     #  then:
