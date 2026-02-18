@@ -1,2 +1,10 @@
 climate_entity:     "climate.anna" # Plugwise Anna/Smile
 sleep_preset:       "asleep"
+eco_preset:         "eco"
+boost_preset:       "boost"
+comfort_preset:     "comfort"
+home_preset:        "home"
+activity_preset:    "activity"
+vacation_preset:    "vacation"
+away_preset:        "away"
+no_frost_preset:    "no_frost"
