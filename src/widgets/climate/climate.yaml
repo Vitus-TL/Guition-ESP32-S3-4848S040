@@ -1024,7 +1024,7 @@ text_sensor:
                 text_color: color_misty_blue
       - if:
           condition:
-            lambda: 'return x == "${sleep_preset}";' # FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
+            lambda: 'return x == "${sleep_preset}";'
           then:
             - lvgl.label.update:
                 id: climate_eco_preset_label
@@ -1607,7 +1607,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: eco
+                          preset_mode: ${eco_preset}
 
               # AWAY
               - obj:
@@ -1655,7 +1655,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: boost
+                          preset_mode: ${boost_preset}
 
               # COMFORT
               - obj:
@@ -1679,7 +1679,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: comfort
+                          preset_mode: ${comfort_preset}
 
               # HOME
               - obj:
@@ -1703,7 +1703,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: home
+                          preset_mode: ${home_preset}
 
               # SLEEP
               - obj:
@@ -1751,7 +1751,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data: 
                           entity_id: "${climate_entity}"
-                          preset_mode: activity
+                          preset_mode: ${activity_preset}
 
               # VACATION
               - obj:
@@ -1775,7 +1775,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data:
                           entity_id: "${climate_entity}"
-                          preset_mode: vacation
+                          preset_mode: ${vacation_preset}
 
               # NO_FROST
               - obj:
@@ -1799,7 +1799,7 @@ lvgl:
                         action: climate.set_preset_mode
                         data:
                           entity_id: "${climate_entity}"
-                          preset_mode: no_frost
+                          preset_mode: ${no_frost_preset}
 
 
         # TEMPERATURE WIDGET
@@ -3410,41 +3410,40 @@ script:
           ESP_LOGD("HVAC", "Available presets: %s", presets_str.c_str());
           
           // ECO
-          if (presets_str.find("eco") != std::string::npos) {
+          if (presets_str.find("${eco_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_eco_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_eco_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
           // AWAY
-          if (presets_str.find("away") != std::string::npos) {
+          if (presets_str.find("${away_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_away_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_away_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
           // BOOST
-          if (presets_str.find("boost") != std::string::npos) {
+          if (presets_str.find("${boost_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_boost_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_boost_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
           // COMFORT
-          if (presets_str.find("comfort") != std::string::npos) {
+          if (presets_str.find("${comfort_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_comfort_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_comfort_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
           // HOME
-          if (presets_str.find("home") != std::string::npos) {
+          if (presets_str.find("${home_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_home_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_home_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
           
-          // SLEEP FIXME: Factory default for Plugwise Anna/Smile is asleep, not sleep. Should be partionally merged with sleep.
           if (presets_str.find("${sleep_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
@@ -3452,21 +3451,21 @@ script:
           }
          
           // VACATION
-          if (presets_str.find("vacation") != std::string::npos) {
+          if (presets_str.find("${vacation_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
 
           // NO_FROST
-          if (presets_str.find("no_frost") != std::string::npos) {
+          if (presets_str.find("${no_frost_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
           }
 
           // ACTIVITY
-          if (presets_str.find("activity") != std::string::npos) {
+          if (presets_str.find("${activity_preset}") != std::string::npos) {
             lv_obj_clear_flag(id(climate_activity_preset_btn), LV_OBJ_FLAG_HIDDEN);
           } else {
             lv_obj_add_flag(id(climate_activity_preset_btn), LV_OBJ_FLAG_HIDDEN);
