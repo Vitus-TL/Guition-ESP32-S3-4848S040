@@ -262,7 +262,7 @@ sensor:
     on_value:
       - script.execute: climate_update_arc_temp_range
 
-  # CLIMATE TARGET TEMPERATURE HIGH
+  # CLIMATE TARGET TEMPERATURE HIGH FIXME: No such attribute with Plugwise Smile/Anna
   - platform: homeassistant
     id: climate_sensor_target_temp_high
     entity_id: "${climate_entity}"
@@ -290,7 +290,7 @@ sensor:
                 
                 id(climate_update_segments).execute();
 
-  # CLIMATE TARGET TEMPERATURE LOW
+  # CLIMATE TARGET TEMPERATURE LOW FIXME: No such attribute with Plugwise Smile/Anna
   - platform: homeassistant
     id: climate_sensor_target_temp_low
     entity_id: "${climate_entity}"
@@ -818,7 +818,7 @@ text_sensor:
     on_value:
       - script.execute: climate_update_mode_buttons_visibility
 
-  # CLIMATE PRESET MODES
+  # CLIMATE PRESET MODES FIXME: Preset modes are stored under climate.anna.preset_modes so why not (more) dynamic code?
   - platform: homeassistant
     id: climate_preset_modes
     entity_id: "${climate_entity}"
