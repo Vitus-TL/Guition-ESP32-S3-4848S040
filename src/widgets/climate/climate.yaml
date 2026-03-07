@@ -348,15 +348,11 @@ text_sensor:
                 id(climate_ui_user_adjusting_target) = false;
                 id(climate_is_active_cool) = false;
 
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_deep_orange    
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_deep_orange
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_deep_orange
+            - lambda: |-
+                lv_color_t c = lv_color_hex(0xFF6600);
+                lv_obj_set_style_text_color(id(climate_target_temperature_whole), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_fraction), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_measurement), c, 0);
 
             - lvgl.arc.update:
                 id: climate_arc_base_heat
@@ -364,25 +360,12 @@ text_sensor:
             - lvgl.arc.update:
                 id: climate_arc_knob_heat
                 value: !lambda return (int)(id(climate_sensor_target_temp).state * id(climate_temp_step_multiplier) + 0.5f);
-            
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_deep_orange
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_misty_blue
+
+            - lambda: |-
+                lv_color_t misty = lv_color_hex(0x9BA2BC);
+                lv_obj_t* lbls[] = { id(climate_cool_mode_label), id(climate_heat_cool_mode_label), id(climate_dry_mode_label), id(climate_fan_mode_label), id(climate_auto_mode_label) };
+                for (auto l : lbls) lv_obj_set_style_text_color(l, misty, 0);
+                lv_obj_set_style_text_color(id(climate_heat_mode_label), lv_color_hex(0xFF6600), 0);
 
             - script.execute: climate_update_active_arc_layer
             - script.execute: climate_update_segments
@@ -408,15 +391,11 @@ text_sensor:
                 id(climate_ui_user_adjusting_target) = false;
                 id(climate_is_active_cool) = true;
 
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_blue    
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_blue
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_blue
+            - lambda: |-
+                lv_color_t c = lv_color_hex(0x4C9FFF);
+                lv_obj_set_style_text_color(id(climate_target_temperature_whole), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_fraction), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_measurement), c, 0);
 
             - lambda: |-
                 int logical = (int)(id(climate_sensor_target_temp).state * id(climate_temp_step_multiplier) + 0.5f);
@@ -428,24 +407,11 @@ text_sensor:
                 lv_arc_set_value(id(climate_arc_base_cool), raw);
                 lv_arc_set_value(id(climate_arc_adjust_cool), logical);
 
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_misty_blue
+            - lambda: |-
+                lv_color_t misty = lv_color_hex(0x9BA2BC);
+                lv_obj_t* lbls[] = { id(climate_heat_mode_label), id(climate_heat_cool_mode_label), id(climate_dry_mode_label), id(climate_fan_mode_label), id(climate_auto_mode_label) };
+                for (auto l : lbls) lv_obj_set_style_text_color(l, misty, 0);
+                lv_obj_set_style_text_color(id(climate_cool_mode_label), lv_color_hex(0x4C9FFF), 0);
 
             - script.execute: climate_update_active_arc_layer
             - script.execute: climate_update_segments
@@ -603,171 +569,33 @@ text_sensor:
             - script.execute: climate_update_active_arc_layer
             - script.execute: climate_update_adjust_buttons_color
 
-      - if:
-          condition:
-            lambda: 'return id(climate_sensor_state).state == "dry";'
-          then:            
+      - lambda: |-
+          std::string mode = id(climate_sensor_state).state;
+          struct { const char* name; uint32_t color; lv_obj_t* mode_lbl; } modes[] = {
+            {"dry",      0xe7c12c, id(climate_dry_mode_label)},
+            {"auto",     0x5CA848, id(climate_auto_mode_label)},
+            {"fan_only", 0x39d19c, id(climate_fan_mode_label)},
+            {"off",      0x9BA2BC, nullptr},
+          };
+          for (auto& m : modes) {
+            if (mode != m.name) continue;
+            lv_color_t c = lv_color_hex(m.color);
+            lv_obj_set_style_arc_color(id(climate_arc_background), c, LV_PART_MAIN);
+            lv_obj_set_style_border_color(id(climate_arc_knob), c, LV_PART_KNOB);
+            lv_obj_set_style_text_color(id(climate_target_temperature_whole), c, 0);
+            lv_obj_set_style_text_color(id(climate_target_temperature_fraction), c, 0);
+            lv_obj_set_style_text_color(id(climate_target_temperature_measurement), c, 0);
+            lv_color_t misty = lv_color_hex(0x9BA2BC);
+            lv_obj_t* mode_lbls[] = {
+              id(climate_heat_mode_label), id(climate_cool_mode_label),
+              id(climate_heat_cool_mode_label), id(climate_dry_mode_label),
+              id(climate_fan_mode_label), id(climate_auto_mode_label),
+            };
+            for (auto lbl : mode_lbls) lv_obj_set_style_text_color(lbl, misty, 0);
+            if (m.mode_lbl) lv_obj_set_style_text_color(m.mode_lbl, c, 0);
+            break;
+          }
 
-            - lvgl.arc.update:
-                id: climate_arc_background
-                arc_color: color_yellow
-            - lvgl.arc.update:
-                id: climate_arc_knob
-                knob:
-                  border_color: color_yellow
-
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_yellow  
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_yellow
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_yellow
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_yellow
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_misty_blue
-
-      - if:
-          condition:
-            lambda: 'return id(climate_sensor_state).state == "auto";'
-          then:            
-
-            - lvgl.arc.update:
-                id: climate_arc_background
-                arc_color: color_green
-            - lvgl.arc.update:
-                id: climate_arc_knob
-                knob:
-                  border_color: color_green
-
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_green  
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_green
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_green
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_green
-
-      - if:
-          condition:
-            lambda: 'return id(climate_sensor_state).state == "fan_only";'
-          then:            
-
-            - lvgl.arc.update:
-                id: climate_arc_background
-                arc_color: color_mint
-            - lvgl.arc.update:
-                id: climate_arc_knob
-                knob:
-                  border_color: color_mint
-
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_mint  
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_mint
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_mint
-
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_mint
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_misty_blue
-
-      - if:
-          condition:
-            lambda: 'return id(climate_sensor_state).state == "off";'
-          then:            
-
-            - lvgl.arc.update:
-                id: climate_arc_background
-                arc_color: color_misty_blue
-            - lvgl.arc.update:
-                id: climate_arc_knob
-                knob:
-                  border_color: color_misty_blue
-
-            - lvgl.label.update:
-                id: climate_target_temperature_whole
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_target_temperature_fraction
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_target_temperature_measurement
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_heat_cool_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_dry_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_fan_mode_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_auto_mode_label
-                text_color: color_misty_blue
-                
       - if:
           condition:
             lambda: 'return id(climate_temp_hum_mode);'
@@ -836,316 +664,27 @@ text_sensor:
           condition:
             lambda: 'return id(climate_arc_range_initialized);'
           timeout: 15s
-      - if:
-          condition:
-            lambda: 'return x == "none";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "eco";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_green
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "home";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_blue        
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "away";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue    
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_orange
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "comfort";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue    
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_yellow        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "boost";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue    
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_red
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "${sleep_preset}";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue    
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_dark_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "activity";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue    
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue        
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_crimson
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "vacation";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_yellow #Some sunny colour
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_misty_blue
-      - if:
-          condition:
-            lambda: 'return x == "no_frost";'
-          then:
-            - lvgl.label.update:
-                id: climate_eco_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_home_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_away_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_comfort_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_boost_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_sleep_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_activity_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_vacation_preset_label
-                text_color: color_misty_blue
-            - lvgl.label.update:
-                id: climate_no_frost_preset_label
-                text_color: color_steel_blue
+      - lambda: |-
+          // Reset all preset labels to misty_blue, then highlight the active one.
+          struct { const char* name; lv_obj_t* lbl; uint32_t hex; } map[] = {
+            {"eco",             id(climate_eco_preset_label),      0x5CA848},
+            {"home",            id(climate_home_preset_label),     0x4C9FFF},
+            {"away",            id(climate_away_preset_label),     0xf07c40},
+            {"comfort",         id(climate_comfort_preset_label),  0xe7c12c},
+            {"boost",           id(climate_boost_preset_label),    0xFF0000},
+            {"${sleep_preset}", id(climate_sleep_preset_label),    0x4867aa},
+            {"activity",        id(climate_activity_preset_label), 0xf5075c},
+            {"vacation",        id(climate_vacation_preset_label), 0xe7c12c},
+            {"no_frost",        id(climate_no_frost_preset_label), 0x606682},
+          };
+          lv_color_t misty = lv_color_hex(0x9BA2BC);
+          for (auto& e : map) lv_obj_set_style_text_color(e.lbl, misty, 0);
+          for (auto& e : map) {
+            if (x == e.name) {
+              lv_obj_set_style_text_color(e.lbl, lv_color_hex(e.hex), 0);
+              break;
+            }
+          }
 
 
   # CLIMATE FAN MODES
@@ -3351,56 +2890,21 @@ script:
       - lambda: |-
           std::string modes_str = id(climate_hvac_modes).state;
           ESP_LOGD("HVAC", "Available modes: %s", modes_str.c_str());
-          
-          // OFF
-          if (modes_str.find("'off'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_off_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_off_mode_btn), LV_OBJ_FLAG_HIDDEN);
+          struct { const char* mode; lv_obj_t* btn; } btns[] = {
+            {"'off'",       id(climate_off_mode_btn)},
+            {"'heat'",      id(climate_heat_mode_btn)},
+            {"'cool'",      id(climate_cool_mode_btn)},
+            {"'auto'",      id(climate_auto_mode_btn)},
+            {"'heat_cool'", id(climate_heat_cool_mode_btn)},
+            {"'fan_only'",  id(climate_fan_mode_btn)},
+            {"'dry'",       id(climate_dry_mode_btn)},
+          };
+          for (auto& b : btns) {
+            if (modes_str.find(b.mode) != std::string::npos)
+              lv_obj_clear_flag(b.btn, LV_OBJ_FLAG_HIDDEN);
+            else
+              lv_obj_add_flag(b.btn, LV_OBJ_FLAG_HIDDEN);
           }
-          
-          // HEAT
-          if (modes_str.find("'heat'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_heat_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_heat_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // COOL  
-          if (modes_str.find("'cool'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_cool_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_cool_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // AUTO
-          if (modes_str.find("'auto'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_auto_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_auto_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // HEAT_COOL
-          if (modes_str.find("'heat_cool'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_heat_cool_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_heat_cool_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // FAN_ONLY
-          if (modes_str.find("'fan_only'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_fan_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_fan_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // DRY
-          if (modes_str.find("'dry'") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_dry_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_dry_mode_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
           ESP_LOGD("HVAC", "Mode buttons visibility updated");
 
   - id: climate_update_preset_buttons_visibility
@@ -3408,69 +2912,23 @@ script:
       - lambda: |-
           std::string presets_str = id(climate_preset_modes).state;
           ESP_LOGD("HVAC", "Available presets: %s", presets_str.c_str());
-          
-          // ECO
-          if (presets_str.find("${eco_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_eco_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_eco_preset_btn), LV_OBJ_FLAG_HIDDEN);
+          struct { const char* preset; lv_obj_t* btn; } btns[] = {
+            {"${eco_preset}",      id(climate_eco_preset_btn)},
+            {"${away_preset}",     id(climate_away_preset_btn)},
+            {"${boost_preset}",    id(climate_boost_preset_btn)},
+            {"${comfort_preset}",  id(climate_comfort_preset_btn)},
+            {"${home_preset}",     id(climate_home_preset_btn)},
+            {"${sleep_preset}",    id(climate_sleep_preset_btn)},
+            {"${vacation_preset}", id(climate_vacation_preset_btn)},
+            {"${no_frost_preset}", id(climate_no_frost_preset_btn)},
+            {"${activity_preset}", id(climate_activity_preset_btn)},
+          };
+          for (auto& b : btns) {
+            if (presets_str.find(b.preset) != std::string::npos)
+              lv_obj_clear_flag(b.btn, LV_OBJ_FLAG_HIDDEN);
+            else
+              lv_obj_add_flag(b.btn, LV_OBJ_FLAG_HIDDEN);
           }
-          
-          // AWAY
-          if (presets_str.find("${away_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_away_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_away_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // BOOST
-          if (presets_str.find("${boost_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_boost_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_boost_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // COMFORT
-          if (presets_str.find("${comfort_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_comfort_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_comfort_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          // HOME
-          if (presets_str.find("${home_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_home_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_home_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
-          if (presets_str.find("${sleep_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_sleep_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-         
-          // VACATION
-          if (presets_str.find("${vacation_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_vacation_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-
-          // NO_FROST
-          if (presets_str.find("${no_frost_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_no_frost_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-
-          // ACTIVITY
-          if (presets_str.find("${activity_preset}") != std::string::npos) {
-            lv_obj_clear_flag(id(climate_activity_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          } else {
-            lv_obj_add_flag(id(climate_activity_preset_btn), LV_OBJ_FLAG_HIDDEN);
-          }
-          
           ESP_LOGD("HVAC", "Preset buttons visibility updated");
 
 
