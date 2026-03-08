@@ -21,13 +21,11 @@ http_request:
   verify_ssl: false
 
 external_components:
-  - source: github://alaltitov/esphome@dev
-    components: [i18n]
-  #  - source:
-  #    type: git
-  #    url: https://github.com/joltwallet/esp_littlefs.git
-  #  components: [littlefs]
-  #   ref: v1.20.4
+  - source:
+      type: local
+      path: /home/mbr/git/esphome/components
+  # - source: github://Vitus-TL/esphome@dev
+    components: [i18n, esp_littlefs]
 
 i18n:
   id: i18n_translations
@@ -53,8 +51,10 @@ esphome:
   includes:
     - <sstream>
     - <algorithm>
-    - common/littlefs_test.h
+    # - common/littlefs_test.h
   platformio_options:
+    # lib_deps: 
+    #      https://github.com/joltwallet/esp_littlefs.git
     board_build.f_cpu: 240000000L
     board_build.flash_mode: dio
     board_build.filesystem: littlefs
@@ -64,11 +64,11 @@ esphome:
       - -DSTORAGE_NAMESPACE="littlefs"
     board_build.cmake_extra_args: -DCMAKE_C_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ~/.esphome/platformio/packages/tool-riscv32-esp-elf/bin/riscv32-esp-elf-gcc
   on_boot:
-    - priority: -100
-      then:
-        - lambda: |-
-            static auto *comp = new LittleFSTest(); //LittleFS debug code
-            comp->setup();
+    # - priority: -100
+    #  then:
+    #    - lambda: |-
+    #        static auto *comp = new LittleFSTest(); //LittleFS debug code
+    #        comp->setup();
     - priority: 400
       then:
         - lambda: |-
@@ -83,7 +83,6 @@ esphome:
     # - priority: 600  # Early, before other components
     #  then:
     #    - lambda: |-
-    #        #include "esp_littlefs.h"
     #        esp_vfs_littlefs_conf_t conf = {
     #            .base_path = "/littlefs",
     #            .partition_label = "littlefs",
@@ -135,6 +134,7 @@ esp32:
       CONFIG_ESP_ERR_TO_NAME_LOOKUP: "y"
       CONFIG_ESPTOOLPY_FLASHSIZE_16MB: "y"
       CONFIG_PARTITION_TABLE_CUSTOM: "common/partitions_16mb.csv"
+      lib_deps: https://github.com/joltwallet/esp_littlefs.git
 
 psram:
   mode: octal
