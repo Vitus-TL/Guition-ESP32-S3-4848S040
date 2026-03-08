@@ -48,3 +48,7 @@
   hex: 4867aa
 - id: color_deep_purple
   hex: 543D72
+- id: color_pure_white
+  hex: FFFFFF
+- id: color_dark_slate
+  hex: 3A3A4C
