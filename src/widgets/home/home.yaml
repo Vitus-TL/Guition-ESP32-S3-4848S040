@@ -260,9 +260,9 @@ sensor:
             id: wifi_status
             text_color: !lambda |-
               if (id(wifi_signal_percent).state > 0) {
-              return lv_color_hex(0x5CA848);
+              return color_green;
               }
-              return lv_color_hex(0x5CA848);
+              return color_green;
             text: !lambda |-
               if (id(wifi_signal_percent).state > 0 && id(wifi_signal_percent).state < 26) {
               return "${wifi_25_icon}";
@@ -2273,7 +2273,7 @@ script:
               lv_label_set_text(day_label, get_day_name(i));
               lv_obj_align(day_label, LV_ALIGN_TOP_MID, 0, 0);
               lv_obj_set_style_text_font(day_label, nunito_16->get_lv_font(), 0);
-              lv_obj_set_style_text_color(day_label, lv_color_hex(0x9BA2BC), 0);
+              lv_obj_set_style_text_color(day_label, color_misty_blue, 0);
             }
             
             // Иконка
@@ -2291,7 +2291,7 @@ script:
               lv_label_set_text(temp_label, temp_str);
               lv_obj_align(temp_label, LV_ALIGN_BOTTOM_MID, 0, 0);
               lv_obj_set_style_text_font(temp_label, nunito_16->get_lv_font(), 0);
-              lv_obj_set_style_text_color(temp_label, lv_color_hex(0x9BA2BC), 0);
+              lv_obj_set_style_text_color(temp_label, color_misty_blue, 0);
             }
           }
           
@@ -2389,7 +2389,7 @@ script:
               lv_label_set_text(time_label, time_str.c_str());
               lv_obj_align(time_label, LV_ALIGN_TOP_MID, 0, 0);
               lv_obj_set_style_text_font(time_label, nunito_16->get_lv_font(), 0);
-              lv_obj_set_style_text_color(time_label, lv_color_hex(0x9BA2BC), 0);
+              lv_obj_set_style_text_color(time_label, color_misty_blue, 0);
             }
             
             // Иконка
@@ -2407,7 +2407,7 @@ script:
               lv_label_set_text(temp_label, temp_str);
               lv_obj_align(temp_label, LV_ALIGN_BOTTOM_MID, 0, 0);
               lv_obj_set_style_text_font(temp_label, nunito_16->get_lv_font(), 0);
-              lv_obj_set_style_text_color(temp_label, lv_color_hex(0x9BA2BC), 0);
+              lv_obj_set_style_text_color(temp_label, color_misty_blue, 0);
             }
           }
           

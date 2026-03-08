@@ -943,8 +943,8 @@ script:
 
           std::string current_source = id(media_player_source_sensor).state;
 
-          const lv_color_t COLOR_DEFAULT = lv_color_hex(0x9BA2BC);
-          const lv_color_t COLOR_ACTIVE  = lv_color_hex(0x2ECC71);
+          const lv_color_t COLOR_DEFAULT = color_misty_blue;
+          const lv_color_t COLOR_ACTIVE  = color_emerald;
 
           std::stringstream ss(input);
           std::string item;
@@ -1006,7 +1006,7 @@ script:
                     lv_obj_t * label = lv_obj_get_child(b, 0);
                     char* btn_source = (char*)lv_obj_get_user_data(b);
                     bool active = (btn_source && strcmp(btn_source, source) == 0);
-                    lv_color_t c = active ? lv_color_hex(0x2ECC71) : lv_color_hex(0x9BA2BC);
+                    lv_color_t c = active ? color_emerald : color_misty_blue;
                     lv_obj_set_style_text_color(label, c, 0);
                   }
                 }

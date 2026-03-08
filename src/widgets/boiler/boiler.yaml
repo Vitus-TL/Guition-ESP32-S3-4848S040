@@ -219,9 +219,9 @@ text_sensor:
             std::string a = x;
             for (auto &c : a) c = (char)tolower((unsigned char)c);
             if (a == "heating") return lv_color_hex(${boiler_arc_color});
-            if (a == "idle") return lv_color_hex(0x9BA2BC);
-            if (a == "off") return lv_color_hex(0x606682);
-            return lv_color_hex(0x606682);
+            if (a == "idle") return color_misty_blue;
+            if (a == "off") return color_steel_blue;
+            return color_steel_blue;
 
 lvgl:
   pages:

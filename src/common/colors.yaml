@@ -52,3 +52,9 @@
   hex: FFFFFF
 - id: color_dark_slate
   hex: 3A3A4C
+- id: color_pale_blue
+  hex: 9DB4C0
+- id: color_dark_teal
+  hex: 3D5A6C
+- id: color_emerald
+  hex: 2ECC71

@@ -69,19 +69,19 @@ sensor:
             // OSCILLATE
             if (has_oscillate) {
               lv_obj_add_flag(id(${widget_name}_oscillating_btn), LV_OBJ_FLAG_CLICKABLE);
-              lv_obj_set_style_text_color(id(${widget_name}_oscillating_btn_icon), lv_color_hex(0x9DB4C0), 0);
+              lv_obj_set_style_text_color(id(${widget_name}_oscillating_btn_icon), color_pale_blue, 0);
             } else {
               lv_obj_clear_flag(id(${widget_name}_oscillating_btn), LV_OBJ_FLAG_CLICKABLE);
-              lv_obj_set_style_text_color(id(${widget_name}_oscillating_btn_icon), lv_color_hex(0x3D5A6C), 0);
+              lv_obj_set_style_text_color(id(${widget_name}_oscillating_btn_icon), color_dark_teal, 0);
             }
             
             // DIRECTION
             if (has_direction) {
               lv_obj_add_flag(id(${widget_name}_direction_btn), LV_OBJ_FLAG_CLICKABLE);
-              lv_obj_set_style_text_color(id(${widget_name}_direction_btn_icon), lv_color_hex(0x9DB4C0), 0);
+              lv_obj_set_style_text_color(id(${widget_name}_direction_btn_icon), color_pale_blue, 0);
             } else {
               lv_obj_clear_flag(id(${widget_name}_direction_btn), LV_OBJ_FLAG_CLICKABLE);
-              lv_obj_set_style_text_color(id(${widget_name}_direction_btn_icon), lv_color_hex(0x3D5A6C), 0);
+              lv_obj_set_style_text_color(id(${widget_name}_direction_btn_icon), color_dark_teal, 0);
             }
           } else {
             // Hide both containers
