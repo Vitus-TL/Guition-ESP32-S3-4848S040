@@ -1,5 +1,6 @@
 #include "esphome.h"
 #include <stdio.h>
+#include "esp_littlefs.h"
 
 class LittleFSTest : public Component {
  public:
