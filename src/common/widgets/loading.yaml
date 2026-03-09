@@ -8,7 +8,7 @@ lvgl:
     widgets:
       - button:
           id: loading_page
-          bg_color: color_slate_blue_gray
+          bg_color: color_slate_blue_grey
           shadow_opa: transp
           width: 480
           height: 480

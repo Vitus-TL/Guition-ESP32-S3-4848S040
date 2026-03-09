@@ -309,7 +309,7 @@ lvgl:
           height: 480
           align: center
           clickable: false
-          bg_color: color_slate_blue_gray
+          bg_color: color_slate_blue_grey
           border_opa: transp
           shadow_opa: transp
           radius: 0

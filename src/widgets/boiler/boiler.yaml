@@ -247,7 +247,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -306,7 +306,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -321,7 +321,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -376,7 +376,7 @@ lvgl:
                         align: center
                         clickable: false
                         radius: 145
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_width: 0
                         border_opa: transp
 
@@ -630,7 +630,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   widgets:
                     - label:
                         id: ${widget_name}_plus_label
@@ -693,7 +693,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   widgets:
                     - label:
                         id: ${widget_name}_minus_label

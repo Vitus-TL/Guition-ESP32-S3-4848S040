@@ -341,7 +341,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -356,7 +356,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -475,7 +475,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -728,7 +728,7 @@ lvgl:
             radius: 140
             border_opa: transp
             border_width: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             widgets:
               - obj:
                   id: ${widget_name}_circle_btn
@@ -740,7 +740,7 @@ lvgl:
                   radius: 60
                   border_opa: transp
                   border_width: 0
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   widgets:
                     - label:
                         id: ${widget_name}_switch_icon

@@ -17,7 +17,7 @@ lvgl:
           height: 110
           align: top_left
           pad_all: 0
-          bg_color: color_slate_blue_gray
+          bg_color: color_slate_blue_grey
           bg_opa: cover
           border_opa: transp
           border_width: 0

@@ -839,7 +839,7 @@ lvgl:
           pad_left: 4
           pad_top: 4
           pad_bottom: 4
-          bg_color: color_slate_blue_gray
+          bg_color: color_slate_blue_grey
           border_opa: transp
           border_width: 0
           shadow_color: color_black
@@ -867,7 +867,7 @@ lvgl:
           pad_left: 4
           pad_top: 4
           pad_bottom: 4
-          bg_color: color_slate_blue_gray
+          bg_color: color_slate_blue_grey
           border_opa: transp
           border_width: 0
           shadow_color: color_black
@@ -887,7 +887,7 @@ lvgl:
 
   pages:
     - id: climate_page
-      bg_color: color_slate_blue_gray
+      bg_color: color_slate_blue_grey
       widgets:
         # STATE
         - label:
@@ -1388,7 +1388,7 @@ lvgl:
                         align: center
                         clickable: true
                         radius: 260
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_color: color_black
                         border_opa: 40%
                         border_width: 3
@@ -1410,7 +1410,7 @@ lvgl:
                         align: center
                         clickable: false
                         radius: 230
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_color: color_white
                         border_width: 3
                         border_opa: 15%
@@ -1899,7 +1899,7 @@ lvgl:
                   width: 140
                   height: 120
                   align: RIGHT_MID
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   pad_all: 0
                   border_opa: transp
                   border_width: 0
@@ -1941,7 +1941,7 @@ lvgl:
                   width: 140
                   height: 140
                   align: right_mid
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   pad_all: 0
                   border_opa: transp
                   border_width: 0
@@ -1957,7 +1957,7 @@ lvgl:
                         width: 140
                         height: 70
                         align: right_mid
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         pad_all: 0
                         border_opa: transp
                         border_width: 0
@@ -2020,7 +2020,7 @@ lvgl:
                         width: 140
                         height: 70
                         align: right_mid
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         pad_all: 0
                         border_opa: transp
                         border_width: 0
@@ -2278,7 +2278,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   widgets:
                     - label:
                         id: climate_plus_label
@@ -2491,7 +2491,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   widgets:
                     - label:
                         id: climate_minus_label
@@ -2579,7 +2579,7 @@ lvgl:
                         align: center
                         clickable: true
                         radius: 260
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_color: color_black
                         border_opa: 40%
                         border_width: 3
@@ -2601,7 +2601,7 @@ lvgl:
                         align: center
                         clickable: false
                         radius: 230
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_color: color_white
                         border_width: 3
                         border_opa: 15%
@@ -2731,7 +2731,7 @@ lvgl:
                   width: 140
                   height: 120
                   align: RIGHT_MID
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   pad_all: 0
                   border_opa: transp
                   border_width: 0
@@ -2783,7 +2783,7 @@ lvgl:
             width: 80
             height: 80
             align: RIGHT_MID
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             pad_all: 0
             border_opa: transp
             border_width: 0

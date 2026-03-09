@@ -279,7 +279,7 @@ lvgl:
 
   pages:
     - id: ${widget_name}_light_page
-      bg_color: color_slate_blue_gray
+      bg_color: color_slate_blue_grey
       widgets:
         # BRIGHTNESS SLIDER
         - obj:
@@ -290,7 +290,7 @@ lvgl:
             width: 80
             height: 260
             align: center
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             pad_all: 0
             border_opa: transp
             border_width: 0
@@ -340,7 +340,7 @@ lvgl:
             width: 80
             height: 260
             align: center
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             pad_all: 0
             border_opa: transp
             border_width: 0
@@ -434,7 +434,7 @@ lvgl:
                         clickable: true
                         radius: 260
                         bg_opa: transp
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_color: color_black
                         border_opa: 40%
                         border_width: 3
@@ -475,7 +475,7 @@ lvgl:
                   align: right_mid
                   clickable: false
                   radius: 230
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   border_width: 0
                   border_opa: transp
 
@@ -485,7 +485,7 @@ lvgl:
                   height: 366
                   align: right_mid
                   radius: 230
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   border_color: color_white
                   border_width: 3
                   border_opa: 15%
@@ -615,7 +615,7 @@ lvgl:
                   height: 70
                   radius: 35
                   align: center
-                  bg_color: color_light_gray
+                  bg_color: color_light_grey
                   border_opa: transp
                   shadow_opa: transp
                   

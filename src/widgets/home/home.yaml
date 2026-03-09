@@ -530,7 +530,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -870,7 +870,7 @@ lvgl:
                   clickable: false
                   radius: 20
                   pad_all: 0
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   bg_opa: transp
                   border_opa: transp
                   border_width: 0
@@ -884,7 +884,7 @@ lvgl:
                         clickable: false
                         radius: 20
                         pad_all: 0
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_opa: transp
                         border_width: 0
                         shadow_opa: transp
@@ -901,7 +901,7 @@ lvgl:
                               id: backlight_settings_brightness_slider
                               y: -20
                               radius: 10
-                              bg_color: color_gray
+                              bg_color: color_grey
                               align: bottom_mid
                               width: 40
                               height: 140
@@ -926,7 +926,7 @@ lvgl:
                         clickable: false
                         radius: 20
                         pad_all: 0
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         border_opa: transp
                         border_width: 0
                         shadow_opa: transp
@@ -1107,7 +1107,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -1189,7 +1189,7 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_gray
+                              bg_color: color_slate_blue_grey
                               widgets:
                                 - label:
                                     align: center
@@ -1281,7 +1281,7 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_gray
+                              bg_color: color_slate_blue_grey
                               widgets:
                                 - label:
                                     align: center
@@ -1298,7 +1298,7 @@ lvgl:
                   clickable: false
                   radius: 20
                   pad_all: 0
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   border_opa: transp
                   border_width: 0
                   shadow_opa: transp
@@ -1427,7 +1427,7 @@ lvgl:
             height: 60
             pad_all: 0
             align: bottom_mid
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             shadow_opa: transp
             border_opa: transp
             border_width: 0
@@ -1608,7 +1608,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
 
 
               - obj:

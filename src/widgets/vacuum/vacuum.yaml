@@ -118,7 +118,7 @@ lvgl:
             height: 235
             align: top_mid
             radius: 20
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -148,7 +148,7 @@ lvgl:
                   width: 80
                   height: 40
                   align: left_mid
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   pad_all: 0
                   border_opa: transp
                   border_width: 0
@@ -171,7 +171,7 @@ lvgl:
                   width: 80
                   height: 40
                   align: right_mid
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   pad_all: 0
                   border_opa: transp
                   border_width: 0
@@ -206,7 +206,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -271,7 +271,7 @@ lvgl:
                         clickable: false
                         radius: 50
                         border_opa: transp
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         widgets:
                           - label:
                               id: vacuum_stop_icon
@@ -341,7 +341,7 @@ lvgl:
                         clickable: false
                         radius: 50
                         border_opa: transp
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         widgets:
                           - label:
                               id: vacuum_returning_icon
@@ -411,7 +411,7 @@ lvgl:
                         clickable: false
                         radius: 50
                         border_opa: transp
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         widgets:
                           - label:
                               id: vacuum_locate_icon
@@ -481,7 +481,7 @@ lvgl:
                         clickable: false
                         radius: 50
                         border_opa: transp
-                        bg_color: color_slate_blue_gray
+                        bg_color: color_slate_blue_grey
                         widgets:
                           - label:
                               id: vacuum_clean_spot_icon
@@ -501,7 +501,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -536,7 +536,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
 
               - obj:
                   id: vacuum_play_pause_main
