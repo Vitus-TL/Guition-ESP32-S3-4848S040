@@ -46,6 +46,10 @@
   hex: 926BC7
 - id: color_dark_blue
   hex: 4867aa
+- id: color_navy_blue
+  hex: '000080'
+- id: color_oxford_blue
+  hex: '002147'
 - id: color_deep_purple
   hex: 543D72
 - id: color_pure_white
