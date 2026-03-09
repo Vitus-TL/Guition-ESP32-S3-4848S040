@@ -202,7 +202,7 @@ text_sensor:
 lvgl:
   pages:
     - id: media_player_page
-      bg_color: color_black
+      bg_color: color_dark_blue
       scrollable: false
       widgets:
         - label:
@@ -522,7 +522,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -550,7 +550,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -577,7 +577,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -608,7 +608,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -649,7 +649,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -679,7 +679,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_black
+                          bg_color: color_dark_blue
                           shadow_width: 4
                         widgets:
                           - label:
@@ -704,7 +704,7 @@ lvgl:
             clickable: false
             radius: 75
             pad_all: 0
-            bg_color: color_black
+            bg_color: color_dark_blue
             border_opa: transp
             border_width: 0
             shadow_opa: transp
