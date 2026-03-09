@@ -1,5 +1,5 @@
 ha_server: "http://homeassistant.local:8123"
 media_player_entity: "media_player.spotify_vitvs"
 #online_image: "https://www.example.com/example.jpeg"
-online_image: "https://cdn.webshopapp.com/shops/29055/files/310368957/image.jpg"
-
+online_image: "https://quillingcard.com/cdn/shop/files/framed-art-framed-art-size-artist-series-starry-night-van-gogh-35192021286991.jpg"
+bg_color_media_player: "color_slate_blue_grey" # See src/common/colors.yaml for colors

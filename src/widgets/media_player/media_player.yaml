@@ -202,7 +202,7 @@ text_sensor:
 lvgl:
   pages:
     - id: media_player_page
-      bg_color: color_dark_blue
+      bg_color: ${bg_color_media_player}
       scrollable: false
       widgets:
         - label:
@@ -221,7 +221,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -236,7 +236,7 @@ lvgl:
                   scrollable: false
                   radius: 20
                   pad_all: 0
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
                   border_opa: transp
                   border_width: 0
                   shadow_opa: transp
@@ -313,7 +313,7 @@ lvgl:
                   height: 140
                   align: left_mid
                   bg_opa: transp
-                  border_color: color_slate_blue_gray
+                  border_color: color_slate_blue_grey
                   border_width: 10
                   shadow_opa: transp
                   radius: 20
@@ -329,7 +329,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -406,7 +406,7 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_gray
+                              bg_color: color_slate_blue_grey
                               widgets:
                                 - label:
                                     align: center
@@ -473,7 +473,7 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_gray
+                              bg_color: color_slate_blue_grey
                               widgets:
                                 - label:
                                     align: center
@@ -489,7 +489,7 @@ lvgl:
             height: 80
             pad_all: 0
             align: bottom_mid
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             shadow_opa: transp
             border_opa: transp
             border_width: 0
@@ -522,7 +522,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -550,7 +550,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -577,7 +577,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -608,7 +608,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -649,7 +649,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -679,7 +679,7 @@ lvgl:
                         shadow_spread: 1
                         shadow_color: color_black
                         pressed:
-                          bg_color: color_dark_blue
+                          bg_color: ${bg_color_media_player}
                           shadow_width: 4
                         widgets:
                           - label:
@@ -704,7 +704,7 @@ lvgl:
             clickable: false
             radius: 75
             pad_all: 0
-            bg_color: color_dark_blue
+            bg_color: ${bg_color_media_player}
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -717,7 +717,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_gray
+                  bg_color: color_slate_blue_grey
 
               - obj:
                   width: 150
@@ -789,7 +789,7 @@ lvgl:
             height: 360
             align: center
             pad_all: 0
-            bg_color: color_slate_blue_gray
+            bg_color: color_slate_blue_grey
             border_opa: transp
             border_width: 0
             shadow_opa: transp
