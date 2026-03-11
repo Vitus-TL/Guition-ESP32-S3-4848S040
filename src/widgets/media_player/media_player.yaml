@@ -210,7 +210,7 @@ lvgl:
             y: 15
             align: top_mid
             text_font: nunito_20
-            text_color: color_misty_blue
+            text_color: ${btn_color_media_player}
             text: "My Media Player"
         - obj:
             y: 60
@@ -221,7 +221,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_grey
+            bg_color: ${fg_color_media_player}
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -236,7 +236,7 @@ lvgl:
                   scrollable: false
                   radius: 20
                   pad_all: 0
-                  bg_color: color_slate_blue_grey
+                  bg_color: ${fg_color_media_player}
                   border_opa: transp
                   border_width: 0
                   shadow_opa: transp
@@ -272,7 +272,7 @@ lvgl:
                               long_mode: DOT
                               y: -25
                               align: CENTER
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: nunito_20
                               text: "Title"
                           - label:
@@ -282,7 +282,7 @@ lvgl:
                               long_mode: DOT
                               y: 3
                               align: CENTER
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: nunito_16
                               text: "Artist"
                           - slider:
@@ -329,7 +329,7 @@ lvgl:
             scrollable: false
             radius: 20
             pad_all: 0
-            bg_color: color_slate_blue_grey
+            bg_color: ${fg_color_media_player}
             border_opa: transp
             border_width: 0
             shadow_opa: transp
@@ -393,7 +393,7 @@ lvgl:
                               bg_opa: transp 
                               border_opa: transp
                               shadow_width: 4
-                              shadow_color: 0xFFFFFF
+                              shadow_color: color_pure_white
                               shadow_ofs_x: -4
                               shadow_ofs_y: -2
                               shadow_opa: 30%
@@ -406,12 +406,12 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_grey
+                              bg_color: ${fg_color_media_player}
                               widgets:
                                 - label:
                                     align: center
                                     text_font: mdi_icons_40
-                                    text_color: color_misty_blue
+                                    text_color: ${btn_color_media_player}
                                     text: "${previous_track_icon}"
 
                     # NEXT BUTTON
@@ -460,7 +460,7 @@ lvgl:
                               bg_opa: transp 
                               border_opa: transp
                               shadow_width: 4
-                              shadow_color: 0xFFFFFF
+                              shadow_color: color_pure_white
                               shadow_ofs_x: -4
                               shadow_ofs_y: -2
                               shadow_opa: 30%
@@ -473,12 +473,12 @@ lvgl:
                               clickable: false
                               radius: 50
                               border_opa: transp
-                              bg_color: color_slate_blue_grey
+                              bg_color: ${fg_color_media_player}
                               widgets:
                                 - label:
                                     align: center
                                     text_font: mdi_icons_40
-                                    text_color: color_misty_blue
+                                    text_color: ${btn_color_media_player}
                                     text: "${next_track_icon}"
 
         # SECONDARY BUTTONS
@@ -489,7 +489,7 @@ lvgl:
             height: 80
             pad_all: 0
             align: bottom_mid
-            bg_color: color_slate_blue_grey
+            bg_color: ${fg_color_media_player}
             shadow_opa: transp
             border_opa: transp
             border_width: 0
@@ -527,7 +527,7 @@ lvgl:
                         widgets:
                           - label:
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${power_icon}"
                               on_press:
@@ -556,7 +556,7 @@ lvgl:
                           - label:
                               id: media_player_repeat_label
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${repeat_all_icon}"
                               on_press:
@@ -583,7 +583,7 @@ lvgl:
                           - label:
                               id: media_player_source_label
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${media_source}"
                         on_click:
@@ -614,7 +614,7 @@ lvgl:
                           - label:
                               id: media_player_mute_label
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${volume_on_icon}"
                               on_press:
@@ -655,7 +655,7 @@ lvgl:
                           - label:
                               id: media_player_vol_down_label
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${volume_minus_icon}"
                               on_press:
@@ -685,7 +685,7 @@ lvgl:
                           - label:
                               id: media_player_vol_up_label
                               align: center
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_28
                               text: "${volume_plus_icon}"
                               on_press:
@@ -717,7 +717,7 @@ lvgl:
                   clickable: false
                   radius: 50
                   border_opa: transp
-                  bg_color: color_slate_blue_grey
+                  bg_color: ${fg_color_media_player}
 
               - obj:
                   width: 150
@@ -764,7 +764,7 @@ lvgl:
                           - label:
                               id: media_player_state_label
                               align: CENTER
-                              text_color: color_misty_blue
+                              text_color: ${btn_color_media_player}
                               text_font: mdi_icons_52
                               text: "${play_icon}"
                               on_press:
@@ -789,7 +789,7 @@ lvgl:
             height: 360
             align: center
             pad_all: 0
-            bg_color: color_slate_blue_grey
+            bg_color: ${fg_color_media_player}
             border_opa: transp
             border_width: 0
             shadow_opa: transp

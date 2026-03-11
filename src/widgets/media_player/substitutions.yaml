@@ -3,3 +3,5 @@ media_player_entity: "media_player.spotify_vitvs"
 #online_image: "https://www.example.com/example.jpeg"
 online_image: "https://quillingcard.com/cdn/shop/files/framed-art-framed-art-size-artist-series-starry-night-van-gogh-35192021286991.jpg"
 bg_color_media_player: "color_oxford_blue" # See src/common/colors.yaml for colors
+fg_color_media_player: "color_dark_grey" # See src/common/colors.yaml for colors
+btn_color_media_player: "color_misty_blue" # See src/common/colors.yaml for colors
