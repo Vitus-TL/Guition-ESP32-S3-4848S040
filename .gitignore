@@ -5,3 +5,5 @@ src/.esphome/
 src/secrets.yaml
 src/translations/nl.yaml
 .gitignore
+.vim/
+.vimrc
