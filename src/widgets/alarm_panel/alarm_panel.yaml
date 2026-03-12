@@ -7,7 +7,7 @@ globals:
   - id: ${widget_name}_supported_features
     type: int
     restore_value: no
-    initial_value: '63'  # По умолчанию все функции
+    initial_value: '63'  # All features enabled by default
 
   - id: ${widget_name}_current_mode
     type: int
@@ -42,13 +42,13 @@ text_sensor:
           
           ESP_LOGI("AP", "State changed: '%s' -> '%s'", old_state.c_str(), new_state.c_str());
           
-          // Сохраняем новое состояние
+          // Save the new state
           id(${widget_name}_pending_action) = new_state;
           
-          // Определяем, это первая загрузка или изменение состояния
+          // Determine whether this is the first boot or a state change
           bool is_first_boot = (old_state == "" || old_state == new_state);
           
-          // Определяем категории состояний
+          // Determine the state categories
           bool new_is_disarmed = (new_state == "disarmed");
           bool new_is_armed = (new_state == "armed_home" || 
                                new_state == "armed_away" || 
@@ -63,7 +63,7 @@ text_sensor:
                                old_state == "armed_custom_bypass" || 
                                old_state == "armed_vacation");
 
-      # ARMING - мигающая желтая иконка (через LVGL анимацию)
+      # ARMING - flashing yellow icon (via LVGL animation)
       - if:
           condition:
             lambda: 'return id(${widget_name}_state_sensor).state == "arming";'
@@ -91,7 +91,7 @@ text_sensor:
                 text: "${shield_arming_icon}"
             - script.execute: ${widget_name}_blink
 
-      # Обновляем иконки для всех состояний
+      # Update icons for all states
       - if:
           condition:
             lambda: 'return id(${widget_name}_state_sensor).state == "disarmed";'
@@ -170,7 +170,7 @@ text_sensor:
                 text: "${shield_vacation_icon}"
             - script.execute: ${widget_name}_blink_stop
 
-      # Логика анимации
+      # Animation logic
       - lambda: |-
           std::string new_state = id(${widget_name}_state_sensor).state;
           std::string old_state = id(${widget_name}_pending_action);
@@ -192,23 +192,23 @@ text_sensor:
                                old_state == "armed_vacation");
           
           if (is_first_boot) {
-            // Первая загрузка
+            // First boot
             if (new_is_disarmed) {
               id(${widget_name}_switch_to_mode).execute(6);  // INIT -> DISARMED
             } else if (new_is_armed) {
               id(${widget_name}_switch_to_mode).execute(7);  // INIT -> ARMED
             }
           } else {
-            // Изменение состояния
+            // State change
             if (old_is_disarmed && new_is_armed) {
-              // DISARMED -> ARMED (прямой переход из HA)
+              // DISARMED -> ARMED (direct transition from HA)
               id(${widget_name}_switch_to_mode).execute(4);
             } else if (old_is_armed && new_is_disarmed) {
-              // ARMED -> DISARMED (прямой переход из HA)
+              // ARMED -> DISARMED (direct transition from HA)
               id(${widget_name}_switch_to_mode).execute(5);
             } else if (old_is_armed && new_is_armed) {
-              // ARMED -> ARMED (смена режима охраны, просто обновляем иконку)
-              // Анимация уже не нужна, иконка обновлена выше
+              // ARMED -> ARMED (arming mode changed, simply update the icon)
+              // No animation needed; icon has already been updated above
               ESP_LOGI("AP", "Armed mode changed, icon updated");
             }
           }
@@ -1044,23 +1044,23 @@ key_collector:
                 text: !lambda |-
                   return id(i18n_translations).translate("alarm_panel.enter_pass");
 
-# Скрипт для создания кнопок динамически
+# Script for dynamically creating buttons
 script:
   - id: ${widget_name}_visibility_buttons
     then:
       - lambda: |-
-          // Получаем значение supported_features
+          // Read the supported_features value
           int features = id(${widget_name}_supported_features);
           
           ESP_LOGI("alarm", "Updating button visibility, features: %d", features);
           
-          // Определяем структуру для кнопок
+          // Define the structure for buttons
           struct AlarmButton {
             int flag;
             const char* obj_id;
           };
           
-          // Массив кнопок с их ID и флагами
+          // Array of buttons with their IDs and flags
           AlarmButton buttons[] = {
             {1, "${widget_name}_home_btn_bg"},        // ARM_HOME
             {2, "${widget_name}_away_btn_bg"},        // ARM_AWAY
@@ -1069,14 +1069,14 @@ script:
             {32, "${widget_name}_vacation_btn_bg"}    // ARM_VACATION
           };
           
-          // Проверяем каждую кнопку и показываем/скрываем
+          // Check each button and show/hide accordingly
           for (int i = 0; i < 5; i++) {
             bool should_show = (features & buttons[i].flag) != 0;
             
             ESP_LOGI("alarm", "Button %s: flag=%d, should_show=%d", 
                      buttons[i].obj_id, buttons[i].flag, should_show);
             
-            // Получаем объект кнопки по ID
+            // Get the button object by ID
             lv_obj_t* btn = nullptr;
             
             if (strcmp(buttons[i].obj_id, "${widget_name}_home_btn_bg") == 0) {
@@ -1091,7 +1091,7 @@ script:
               btn = id(${widget_name}_vacation_btn_bg);
             }
             
-            // Показываем или скрываем кнопку
+            // Show or hide the button
             if (btn != nullptr) {
               if (should_show) {
                 lv_obj_clear_flag(btn, LV_OBJ_FLAG_HIDDEN);
@@ -1101,38 +1101,38 @@ script:
             }
           }
           
-          // Обновляем layout контейнера
+          // Update the container layout
           lv_obj_update_layout(id(${widget_name}_primary_buttons_container));
 
 
-  # Универсальный скрипт мигания (работает с любым цветом)
+  # Universal blink script (works with any colour)
   - id: ${widget_name}_blink
     then:
       - lambda: |-
-          // Останавливаем все предыдущие анимации на этом объекте
+          // Stop all previous animations on this object
           lv_anim_del(id(${widget_name}_state_icon_bg), nullptr);
-          
-          // Создаем бесконечную анимацию мигания
+
+          // Create an infinite blink animation
           lv_anim_t anim_blink;
           lv_anim_init(&anim_blink);
           lv_anim_set_var(&anim_blink, id(${widget_name}_state_icon_bg));
           lv_anim_set_values(&anim_blink, LV_OPA_0, LV_OPA_30);
           lv_anim_set_time(&anim_blink, 500);
-          lv_anim_set_playback_time(&anim_blink, 500);  // Обратная анимация
-          lv_anim_set_repeat_count(&anim_blink, LV_ANIM_REPEAT_INFINITE);  // Бесконечно
+          lv_anim_set_playback_time(&anim_blink, 500);  // Reverse animation
+          lv_anim_set_repeat_count(&anim_blink, LV_ANIM_REPEAT_INFINITE);  // Infinite
           lv_anim_set_exec_cb(&anim_blink, [](void * var, int32_t v) {
             lv_obj_set_style_bg_opa((lv_obj_t*)var, v, 0);
           });
           lv_anim_set_path_cb(&anim_blink, lv_anim_path_ease_in_out);
           lv_anim_start(&anim_blink);
 
-  # Скрипт остановки мигания
+  # Script to stop blinking
   - id: ${widget_name}_blink_stop
     then:
       - lambda: |-
-          // Останавливаем анимацию мигания
+          // Stop the blink animation
           lv_anim_del(id(${widget_name}_state_icon_bg), nullptr);
-          // Возвращаем нормальную прозрачность
+          // Restore normal opacity
           lv_obj_set_style_bg_opa(id(${widget_name}_state_icon_bg), LV_OPA_20, 0);
 
 

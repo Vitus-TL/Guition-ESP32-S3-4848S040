@@ -782,7 +782,7 @@ script:
 
           int low_scaled = lv_arc_get_value(id(${widget_name}_arc_base_heat));
           
-          // Показываем сегмент только если текущая температура ниже целевой
+          // Show the segment only if the current temperature is below the target
           if (current_scaled < low_scaled - 0.1f * mseg) {
             lv_obj_clear_flag(id(${widget_name}_arc_segment_heat), LV_OBJ_FLAG_HIDDEN);
             lv_obj_clear_flag(id(${widget_name}_arc_dot_heat), LV_OBJ_FLAG_HIDDEN);

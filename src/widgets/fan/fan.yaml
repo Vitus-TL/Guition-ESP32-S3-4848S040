@@ -89,7 +89,7 @@ sensor:
             lv_obj_add_flag(id(${widget_name}_direction_btn_bg), LV_OBJ_FLAG_HIDDEN);
           }
           
-          // PRESET_MODE кнопка
+          // PRESET_MODE button
           if (has_preset_mode) {
             ESP_LOGD("fan", "Showing preset button");
             lv_obj_clear_flag(id(${widget_name}_controls_presets), LV_OBJ_FLAG_HIDDEN);

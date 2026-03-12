@@ -45,7 +45,7 @@ lvgl:
                   flex_align_cross: center
                   flex_align_track: center
                 widgets:
-                  # КОМНАТА 1
+                  # ROOM 1
                   - obj:
                       id: room_1_btn
                       width: 48
@@ -72,7 +72,7 @@ lvgl:
                       on_press:
                         - script.execute: switch_to_room_1
 
-                  # КОМНАТА 2
+                  # ROOM 2
                   - obj:
                       id: room_2_btn
                       width: 48
@@ -99,7 +99,7 @@ lvgl:
                       on_press:
                         - script.execute: switch_to_room_2
 
-                  # КОМНАТА 3
+                  # ROOM 3
                   - obj:
                       id: room_3_btn
                       width: 48
@@ -126,7 +126,7 @@ lvgl:
                       on_press:
                         - script.execute: switch_to_room_3
 
-                  # КОМНАТА 4
+                  # ROOM 4
                   - obj:
                       id: room_4_btn
                       width: 48
@@ -155,7 +155,7 @@ lvgl:
 
 
 script:
-  # Скрипт для показа нужного количества кнопок комнат
+  # Script to show the correct number of room buttons
   - id: get_rooms_amount_btn
     then:
       - lambda: |-
@@ -187,18 +187,18 @@ script:
             lv_obj_add_flag(id(room_4_btn), LV_OBJ_FLAG_HIDDEN);
           }
 
-  # Переключение на комнату 1
+  # Switch to room 1
   - id: switch_to_room_1
     then:
-      # Скрываем селекторы светильников других комнат
+      # Hide light selectors for other rooms
       - lvgl.widget.hide: room_name_2_light_select_widget
       - lvgl.widget.hide: room_name_3_light_select_widget
       - lvgl.widget.hide: room_name_4_light_select_widget
-      # Показываем селектор светильников комнаты 1
+      # Show the light selector for room 1
       - lvgl.widget.show: room_name_1_light_select_widget
-      # Открываем первый светильник комнаты 1
+      # Open the first light of room 1
       - lvgl.page.show: room_name_1_light1_light_page
-      # Обновляем подсветку кнопок комнат
+      # Update the room button highlights
       - lvgl.obj.update:
           id: room_1_btn
           outline_opa: cover
@@ -211,7 +211,7 @@ script:
       - lvgl.obj.update:
           id: room_4_btn
           outline_opa: transp
-      # Обновляем подсветку кнопок светильников
+      # Update the light button highlights
       - lvgl.obj.update:
           id: room_name_1_light1_btn
           outline_opa: cover
@@ -225,7 +225,7 @@ script:
           id: room_name_1_light4_btn
           outline_opa: transp
 
-  # Переключение на комнату 2
+  # Switch to room 2
   - id: switch_to_room_2
     then:
       - lvgl.widget.hide: room_name_1_light_select_widget
@@ -257,7 +257,7 @@ script:
           id: room_name_2_light4_btn
           outline_opa: transp
 
-  # Переключение на комнату 3
+  # Switch to room 3
   - id: switch_to_room_3
     then:
       - lvgl.widget.hide: room_name_1_light_select_widget
@@ -289,7 +289,7 @@ script:
           id: room_name_3_light4_btn
           outline_opa: transp
 
-  # Переключение на комнату 4
+  # Switch to room 4
   - id: switch_to_room_4
     then:
       - lvgl.widget.hide: room_name_1_light_select_widget

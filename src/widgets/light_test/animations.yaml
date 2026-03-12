@@ -898,7 +898,7 @@ script:
 
 
   # ═══════════════════════════════════════════════════════════════════════════
-  # ГЛАВНЫЙ СКРИПТ: Матрица переходов между режимами (12 комбинаций)
+  # MAIN SCRIPT: Transition matrix between modes (12 combinations)
   # ═══════════════════════════════════════════════════════════════════════════
   - id: ${widget_name}_start_lights_animation
     parameters:
@@ -910,11 +910,11 @@ script:
           ESP_LOGD("animation", "Starting animation: %d → %d", from_mode, to_mode);
           
           // ═══════════════════════════════════════════════════════════════════
-          // МАТРИЦА ПЕРЕХОДОВ (12 анимаций)
+          // TRANSITION MATRIX (12 animations)
           // ═══════════════════════════════════════════════════════════════════
           
           // ───────────────────────────────────────────────────────────────────
-          // ИЗ ONOFF (0) → 3 перехода
+          // FROM ONOFF (0) → 3 transitions
           // ───────────────────────────────────────────────────────────────────
           if (from_mode == 0 && to_mode == 1) {
             ESP_LOGD("animation", "▶ ONOFF → Brightness");
@@ -929,7 +929,7 @@ script:
             id(${widget_name}_animate_light_onoff_to_rgb).execute();
           
           // ───────────────────────────────────────────────────────────────────
-          // ИЗ BRIGHTNESS (1) → 3 перехода
+          // FROM BRIGHTNESS (1) → 3 transitions
           // ───────────────────────────────────────────────────────────────────
           } else if (from_mode == 1 && to_mode == 0) {
             ESP_LOGD("animation", "▶ Brightness → ONOFF");
@@ -944,7 +944,7 @@ script:
             id(${widget_name}_animate_light_brightness_to_rgb).execute();
           
           // ───────────────────────────────────────────────────────────────────
-          // ИЗ COLOR TEMP (2) → 3 перехода
+          // FROM COLOR TEMP (2) → 3 transitions
           // ───────────────────────────────────────────────────────────────────
           } else if (from_mode == 2 && to_mode == 0) {
             ESP_LOGD("animation", "▶ Color Temp → ONOFF");
@@ -959,7 +959,7 @@ script:
             id(${widget_name}_animate_light_color_temp_to_rgb).execute();
           
           // ───────────────────────────────────────────────────────────────────
-          // ИЗ RGB (3) → 3 перехода
+          // FROM RGB (3) → 3 transitions
           // ───────────────────────────────────────────────────────────────────
           } else if (from_mode == 3 && to_mode == 0) {
             ESP_LOGD("animation", "▶ RGB → ONOFF");
@@ -974,7 +974,7 @@ script:
             id(${widget_name}_animate_light_rgb_to_color_temp).execute();
           
           // ───────────────────────────────────────────────────────────────────
-          // БЕЗ ИЗМЕНЕНИЙ (4 случая)
+          // NO CHANGE (4 cases)
           // ───────────────────────────────────────────────────────────────────
           } else if (from_mode == to_mode) {
             ESP_LOGD("animation", "⏸ No change: mode %d → %d", from_mode, to_mode);

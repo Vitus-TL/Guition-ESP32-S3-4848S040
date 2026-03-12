@@ -1,6 +1,6 @@
 substitutions: !include substitutions.yaml
 
-# ✅ ОПТИМИЗИРОВАННЫЕ GLOBALS - только примитивные типы!
+# ✅ OPTIMISED GLOBALS - primitive types only!
 globals:
   - id: current_repeat_mode_idx
     type: int
@@ -153,18 +153,18 @@ text_sensor:
     on_value:
       - script.execute: update_repeat_mode_script
 
-  # MEDIA PLAYER SOURCE LIST - ✅ ОПТИМИЗИРОВАНО
+  # MEDIA PLAYER SOURCE LIST - ✅ OPTIMIZED
   - platform: homeassistant
     id: media_player_source_list_sensor
     entity_id: "${media_player_entity}"
     attribute: source_list
     on_value:
       - lambda: |-
-          // ✅ НЕ создаём вектор, только проверяем наличие
+          // ✅ We do NOT create a vector, we only check for its presence
           bool has_sources = false;
           
           if (!x.empty() && x != "unknown" && x != "unavailable") {
-            // Простая проверка: есть ли запятые или длина > 4
+            // Simple check: are there commas or length > 4
             has_sources = (x.find(',') != std::string::npos) || 
                           (x.length() > 4 && x.find('[') != std::string::npos);
           }
@@ -173,7 +173,7 @@ text_sensor:
           
           ESP_LOGI("MP_PANEL", "Sources available: %d", has_sources);
           
-          // Обновляем состояние кнопки
+          // Update button state
           lv_obj_t* btn = id(media_player_source_btn);
           lv_obj_t* label = id(media_player_source_label);
           
@@ -194,7 +194,7 @@ text_sensor:
     attribute: source
     on_value:
       - lambda: |-
-          // Сохраняем текущий источник для синхронизации
+          // Save current source for synchronization  
           if (!x.empty()) {
             ESP_LOGD("MP_PANEL", "Current source: %s", x.c_str());
           }
@@ -832,7 +832,7 @@ lvgl:
               - lvgl.page.show: home_page
 
 script:
-  # ✅ ОПТИМИЗИРОВАНО - читаем напрямую из сенсора
+  # ✅ OPTIMISED - reading directly from the sensor
   - id: update_cover_script
     mode: restart
     then:
@@ -847,12 +847,12 @@ script:
           id: media_image_jpeg
           url: "${ha_server}/local/display_tools/cover.jpeg"
 
-  # ✅ ОПТИМИЗИРОВАНО - статические массивы вместо глобальных векторов
+  # ✅ OPTIMISED - static arrays instead of global vectors
   - id: update_repeat_mode_script
     mode: restart
     then:
       - lambda: |-
-          // ✅ Статические массивы - не занимают стек
+          // ✅ Static arrays - do not use stack space
           static const char* REPEAT_MODES[] = {"all", "one", "off"};
           static const char* REPEAT_ICONS[] = {
             "${repeat_all_icon}", 
@@ -863,7 +863,7 @@ script:
           
           std::string current_mode = id(media_player_repeat_sensor).state;
           
-          // Найти индекс режима
+          // Find the mode index
           for (int i = 0; i < MODES_COUNT; i++) {
             if (current_mode == REPEAT_MODES[i]) {
               id(current_repeat_mode_idx) = i;
@@ -895,8 +895,8 @@ script:
           lv_label_set_text(id(media_player_repeat_label), new_icon);
           
           ESP_LOGD("MP_PANEL", "Switching to repeat mode: %s", new_mode);
-          
-          // ✅ ИСПОЛЬЗУЕМ ГЛОБАЛЬНУЮ ПЕРЕМЕННУЮ
+         
+          // ✅ USING GLOBAL VARIABLE 
           id(mode_to_send_str) = new_mode;
           
       - homeassistant.action:
@@ -992,7 +992,7 @@ script:
 
               ESP_LOGI("MP_PANEL", "Selected source: %s", source);
 
-              // ✅ ИСПОЛЬЗУЕМ ГЛОБАЛЬНУЮ ПЕРЕМЕННУЮ
+              // ✅ USING GLOBAL VARIABLE
               id(selected_source_str) = source;
 
               id(media_player_send_source_to_ha).execute();
@@ -1036,7 +1036,7 @@ script:
   - id: animate_mp_to_source
     then:
       - lambda: |-
-          // ШАГ 1: Кнопки уезжают, круг вниз, виджет исчезает
+          // STEP 1: Buttons slide away, circle goes down, widget disappears  
           lv_anim_t anim_prev_btn, anim_next_btn, anim_circle, anim_main_fade;
           
           lv_anim_init(&anim_prev_btn);
@@ -1082,7 +1082,7 @@ script:
       - delay: 600ms
       
       - lambda: |-
-          // ШАГ 2: Средняя панель расширяется и поднимается + радиус -> 0
+          // STEP 2: Middle panel expands and rises + radius -> 0  
           lv_anim_t anim_middle_expand, anim_middle_move_up, anim_radius;
           
           lv_anim_init(&anim_middle_expand);
@@ -1104,8 +1104,8 @@ script:
           });
           lv_anim_set_path_cb(&anim_middle_move_up, lv_anim_path_ease_in_out);
           lv_anim_start(&anim_middle_move_up);
-          
-          // ✅ АНИМАЦИЯ РАДИУСА (20 -> 0)
+         
+          // ✅ RADIUS ANIMATION (20 -> 0) 
           lv_anim_init(&anim_radius);
           lv_anim_set_var(&anim_radius, id(media_player_primary_controls_background));
           lv_anim_set_values(&anim_radius, 20, 0);
@@ -1119,7 +1119,7 @@ script:
       - delay: 350ms
       
       - lambda: |-
-          // ШАГ 3: Показываем панель источников
+          // STEP 3: Show sources panel
           lv_obj_clear_flag(id(media_player_source_panel), LV_OBJ_FLAG_HIDDEN);
           lv_obj_set_style_opa(id(media_player_source_panel), 0, 0);
           
@@ -1134,8 +1134,8 @@ script:
           });
           lv_anim_set_path_cb(&anim_source_panel_fade, lv_anim_path_ease_in_out);
           lv_anim_start(&anim_source_panel_fade);
-          
-          // ✅ Строим панель источников ПОСЛЕ показа
+        
+          // ✅ Build sources panel AFTER showing  
           id(media_player_build_source_panel).execute();
 
       - delay: 400ms
@@ -1149,7 +1149,7 @@ script:
       - lambda: |-
           id(is_animating) = true;
           
-          // ШАГ 1: Скрываем панель источников
+          // STEP 1: Hide the source panel
           lv_anim_t anim_source_panel_fade;
           
           lv_anim_init(&anim_source_panel_fade);
@@ -1168,7 +1168,7 @@ script:
       - delay: 400ms
       
       - lambda: |-
-          // ШАГ 2: Средняя панель сжимается и опускается + радиус -> 20
+          // STEP 2: Middle panel shrinks and moves down + radius -> 20
           lv_anim_t anim_middle_shrink, anim_middle_move_down, anim_radius;
           
           lv_anim_init(&anim_middle_shrink);
@@ -1191,7 +1191,7 @@ script:
           lv_anim_set_path_cb(&anim_middle_move_down, lv_anim_path_ease_in_out);
           lv_anim_start(&anim_middle_move_down);
           
-          // ✅ АНИМАЦИЯ РАДИУСА (0 -> 20)
+          // ✅ RADIUS ANIMATION (0 -> 20)
           lv_anim_init(&anim_radius);
           lv_anim_set_var(&anim_radius, id(media_player_primary_controls_background));
           lv_anim_set_values(&anim_radius, 0, 20);
@@ -1205,7 +1205,7 @@ script:
       - delay: 350ms
       
       - lambda: |-
-          // ШАГ 3: Кнопки возвращаются, круг вверх, виджет появляется
+          // STEP 3: Buttons return, circle moves up, widget appears
           lv_anim_t anim_prev_btn, anim_next_btn, anim_circle, anim_main_fade;
           
           lv_anim_init(&anim_prev_btn);

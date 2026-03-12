@@ -29,23 +29,23 @@ globals:
     initial_value: "false"
     restore_value: no
 
-  # Список доступных fan_mode
+  # List of available fan_modes
   - id: climate_fan_mode_list
     type: std::vector<std::string>
     restore_value: no
 
-  # Текущий выбранный индекс fan_mode
+  # Currently selected fan_mode index
   - id: climate_selected_fan_mode_index
     type: int
     restore_value: no
     initial_value: '0'
 
-  # Список доступных swing_mode
+  # List of available swing_modes
   - id: climate_swing_mode_list
     type: std::vector<std::string>
     restore_value: no
 
-  # Текущий выбранный индекс swing_mode
+  # Currently selected swing_mode index
   - id: climate_selected_swing_mode_index
     type: int
     restore_value: no
@@ -3267,7 +3267,7 @@ script:
     then:
       - lambda: |-
           if (id(climate_fan_panel_open)) {
-            // Закрытие панели без открытия другой -> анимация закрытия
+            // Closing the panel without opening another -> close animation
             lv_anim_t a;
             lv_anim_init(&a);
             lv_anim_set_var(&a, id(climate_fan_modes_panel));
@@ -3282,10 +3282,10 @@ script:
             lv_anim_start(&a);
             id(climate_fan_panel_open) = false;
           } else {
-            // Проверяем, открыта ли swing панель
+            // Check whether the swing panel is open
             bool swing_panel_was_open = id(climate_swing_panel_open);
-            
-            // Если swing панель открыта, мгновенно скрываем ее
+
+            // If the swing panel is open, hide it instantly
             if (swing_panel_was_open) {
               lv_obj_add_flag(id(climate_swing_modes_panel), LV_OBJ_FLAG_HIDDEN);
               id(climate_swing_panel_open) = false;
@@ -3295,10 +3295,10 @@ script:
             lv_obj_clear_flag(id(climate_fan_modes_panel), LV_OBJ_FLAG_HIDDEN);
             
             if (swing_panel_was_open) {
-              // Если переключаемся с другой панели - мгновенное открытие
+              // Switching from another panel - open instantly
               lv_obj_set_x(id(climate_fan_modes_panel), 0);
             } else {
-              // Если другая панель не была открыта - анимация открытия
+              // Another panel was not open - use open animation
               lv_obj_set_x(id(climate_fan_modes_panel), -lv_obj_get_width(id(climate_fan_modes_panel)));
               lv_anim_t a;
               lv_anim_init(&a);
@@ -3444,7 +3444,7 @@ script:
     then:
       - lambda: |-
           if (id(climate_swing_panel_open)) {
-            // Закрытие панели без открытия другой -> анимация закрытия
+            // Closing the panel without opening another -> close animation
             lv_anim_t a;
             lv_anim_init(&a);
             lv_anim_set_var(&a, id(climate_swing_modes_panel));
@@ -3459,10 +3459,10 @@ script:
             lv_anim_start(&a);
             id(climate_swing_panel_open) = false;
           } else {
-            // Проверяем, открыта ли fan панель
+            // Check whether the fan panel is open
             bool fan_panel_was_open = id(climate_fan_panel_open);
-            
-            // Если fan панель открыта, мгновенно скрываем ее
+
+            // If the fan panel is open, hide it instantly
             if (fan_panel_was_open) {
               lv_obj_add_flag(id(climate_fan_modes_panel), LV_OBJ_FLAG_HIDDEN);
               id(climate_fan_panel_open) = false;
@@ -3472,10 +3472,10 @@ script:
             lv_obj_clear_flag(id(climate_swing_modes_panel), LV_OBJ_FLAG_HIDDEN);
             
             if (fan_panel_was_open) {
-              // Если переключаемся с другой панели - мгновенное открытие
+              // Switching from another panel - open instantly
               lv_obj_set_x(id(climate_swing_modes_panel), 0);
             } else {
-              // Если другая панель не была открыта - анимация открытия
+              // Another panel was not open - use open animation
               lv_obj_set_x(id(climate_swing_modes_panel), -lv_obj_get_width(id(climate_swing_modes_panel)));
               lv_anim_t a;
               lv_anim_init(&a);

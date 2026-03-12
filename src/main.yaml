@@ -486,12 +486,12 @@ display:
 #   - interval: 30s
 #     then:
 #       - lambda: |-
-#           // Общая информация о памяти
+#           // General memory information
 #           ESP_LOGI("memory", "Free heap: %d bytes", esp_get_free_heap_size());
 #           ESP_LOGI("memory", "Free internal heap: %d bytes", esp_get_free_internal_heap_size());
 #           ESP_LOGI("memory", "Min free heap: %d bytes", esp_get_minimum_free_heap_size());
           
-#           // Детальная статистика кучи
+#           // Detailed heap statistics
 #           multi_heap_info_t info;
 #           heap_caps_get_info(&info, MALLOC_CAP_INTERNAL);
 #           ESP_LOGI("memory", "SRAM total: %d, free: %d, largest_free: %d", 
@@ -499,7 +499,7 @@ display:
 #                    info.total_free_bytes, 
 #                    info.largest_free_block);
           
-#           // Статистика по PSRAM
+#           // PSRAM statistics
 #           heap_caps_get_info(&info, MALLOC_CAP_SPIRAM);
 #           ESP_LOGI("memory", "PSRAM total: %d, free: %d, largest_free: %d", 
 #                    info.total_free_bytes + info.total_allocated_bytes,

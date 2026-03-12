@@ -16,7 +16,7 @@ globals:
     restore_value: yes
     initial_value: '5'
 
-  # Данные daily прогноза
+  # Daily forecast data
   - id: forecast_daily_count
     type: int
     initial_value: '0'
@@ -30,7 +30,7 @@ globals:
   - id: forecast_daily_conditions
     type: std::string[10]
   
-  # Данные hourly прогноза
+  # Hourly forecast data
   - id: forecast_hourly_count
     type: int
     initial_value: '0'
@@ -1951,7 +1951,7 @@ script:
   - id: log_widgets_status
     then:
       - lambda: |-
-          // Создаем список пар: указатель на виджет и его имя
+          // Create a list of pairs: widget pointer and its name
           auto widget_list = {
               std::make_pair(id(main_widget_background), "main_widget_background"),
               std::make_pair(id(weather_time_widget), "weather_time_widget"),
@@ -2020,7 +2020,7 @@ script:
 ####### FORECASTS ########
 
   # ========================================
-  # 1️⃣ PARSE DAILY FORECASTS (БЕЗ ИЗМЕНЕНИЙ)
+  # 1️⃣ PARSE DAILY FORECASTS (UNCHANGED)
   # ========================================
   - id: parse_daily_forecasts
     then:
@@ -2053,7 +2053,7 @@ script:
           int count = std::min((int)forecasts.size(), 6);
           id(forecast_daily_count) = count;
           
-          // Вычисляем offset ОДИН РАЗ
+          // Calculate the offset ONCE
           auto local_now = id(sntp_time).now();
           auto utc_now = id(sntp_time).utcnow();
           
@@ -2074,15 +2074,15 @@ script:
               
               struct tm tm = {};
               if (strptime(dt_str, "%Y-%m-%dT%H:%M:%S", &tm)) {
-                // mktime() интерпретирует как ЛОКАЛЬНОЕ время (MSK)
+                // mktime() interprets as LOCAL time (system timezone)
                 time_t local_ts = mktime(&tm);
                 
-                // ✅ ПРИБАВЛЯЕМ offset, чтобы получить правильный UTC timestamp
+                // ✅ ADD offset to obtain the correct UTC timestamp
                 time_t utc_timestamp = local_ts + tz_offset;
                 
                 id(forecast_daily_timestamps)[i] = utc_timestamp;
                 
-                // Проверка: конвертируем обратно
+                // Verification: convert back
                 struct tm check_utc;
                 gmtime_r(&utc_timestamp, &check_utc);
                 
@@ -2109,7 +2109,7 @@ script:
 
 
   # ========================================
-  # 2️⃣ PARSE HOURLY FORECASTS (ИСПРАВЛЕН)
+  # 2️⃣ PARSE HOURLY FORECASTS (CORRECTED)
   # ========================================
   - id: parse_hourly_forecasts
     then:
@@ -2141,10 +2141,10 @@ script:
           int count = forecasts.size();
           id(forecast_hourly_count) = count;
           
-          // Вычисляем offset ОДИН РАЗ
+          // Calculate the offset ONCE
           auto local_now = id(sntp_time).now();
           auto utc_now = id(sntp_time).utcnow();
-          
+
           int32_t offset_hours = local_now.hour - utc_now.hour;
           if (offset_hours > 12) offset_hours -= 24;
           if (offset_hours < -12) offset_hours += 24;
@@ -2161,16 +2161,16 @@ script:
               
               struct tm tm = {};
               if (strptime(dt_str, "%Y-%m-%dT%H:%M:%S", &tm)) {
-                // mktime() интерпретирует как ЛОКАЛЬНОЕ время (MSK)
+                // mktime() interprets as LOCAL time (system timezone)
                 time_t local_ts = mktime(&tm);
                 
-                // ✅ ПРИБАВЛЯЕМ offset, чтобы получить правильный UTC timestamp
-                // Потому что строка содержала UTC время, а mktime подумал что это MSK
+                // ✅ ADD offset to obtain the correct UTC timestamp
+                // Because the string contained UTC time, but mktime assumed it was local time
                 time_t utc_timestamp = local_ts + tz_offset;
                 
                 id(forecast_hourly_timestamps)[i] = utc_timestamp;
                 
-                // Проверка: конвертируем обратно
+                // Verification: convert back
                 struct tm check_utc;
                 gmtime_r(&utc_timestamp, &check_utc);
                 
@@ -2199,7 +2199,7 @@ script:
 
 
   # ========================================
-  # 3️⃣ UPDATE DAILY DISPLAY (ИСПРАВЛЕН)
+  # 3️⃣ UPDATE DAILY DISPLAY (CORRECTED)
   # ========================================
   - id: update_daily_display
     then:
@@ -2267,7 +2267,7 @@ script:
             lv_obj_set_style_border_width(item, 0, 0);
             lv_obj_set_style_pad_all(item, 0, 0);
             
-            // День недели
+            // Day of the week
             lv_obj_t* day_label = lv_label_create(item);
             if (day_label) {
               lv_label_set_text(day_label, get_day_name(i));
@@ -2276,14 +2276,14 @@ script:
               lv_obj_set_style_text_color(day_label, color_misty_blue, 0);
             }
             
-            // Иконка
+            // Icon
             lv_obj_t* icon = lv_img_create(item);
             if (icon) {
               lv_img_set_src(icon, get_icon(id(forecast_daily_conditions)[i]));
               lv_obj_align(icon, LV_ALIGN_CENTER, 0, 0);
             }
             
-            // Температура
+            // Temperature
             lv_obj_t* temp_label = lv_label_create(item);
             if (temp_label) {
               char temp_str[10];
@@ -2297,7 +2297,7 @@ script:
           
 
   # ========================================
-  # 4️⃣ UPDATE HOURLY DISPLAY (ИСПРАВЛЕН)
+  # 4️⃣ UPDATE HOURLY DISPLAY (CORRECTED)
   # ========================================
   - id: update_hourly_display
     then:
@@ -2327,11 +2327,11 @@ script:
             return id(sunny_small_img);
           };
           
-          // ✅ ПРАВИЛЬНАЯ КОНВЕРТАЦИЯ UTC → LOCAL
+          // ✅ CORRECT CONVERSION UTC → LOCAL
           auto get_time_str = [](time_t utc_timestamp) -> std::string {
             if (utc_timestamp == 0) return "--:--";
             
-            // Получаем offset
+            // Get the offset
             auto local_now = id(sntp_time).now();
             auto utc_now = id(sntp_time).utcnow();
             
@@ -2343,10 +2343,10 @@ script:
                               (local_now.minute - utc_now.minute) * 60 + 
                               (local_now.second - utc_now.second);
             
-            // Применяем offset
+            // Apply the offset
             time_t local_timestamp = utc_timestamp + tz_offset;
             
-            // Конвертируем в структуру времени
+            // Convert to a time structure
             struct tm local_tm;
             gmtime_r(&local_timestamp, &local_tm);
             
@@ -2355,7 +2355,7 @@ script:
             return std::string(buf);
           };
 
-          // Создаем scrollable контейнер
+          // Create a scrollable container
           lv_obj_t* cont = lv_obj_create(id(weather_forecast_hourly));
           if (!cont) return;
           
@@ -2382,7 +2382,7 @@ script:
             
             lv_obj_clear_flag(item, LV_OBJ_FLAG_SCROLLABLE);
             
-            // Время
+            // Time
             lv_obj_t* time_label = lv_label_create(item);
             if (time_label) {
               std::string time_str = get_time_str(id(forecast_hourly_timestamps)[i]);
@@ -2392,14 +2392,14 @@ script:
               lv_obj_set_style_text_color(time_label, color_misty_blue, 0);
             }
             
-            // Иконка
+            // Icon
             lv_obj_t* icon = lv_img_create(item);
             if (icon) {
               lv_img_set_src(icon, get_icon(id(forecast_hourly_conditions)[i]));
               lv_obj_align(icon, LV_ALIGN_CENTER, 0, 0);
             }
             
-            // Температура
+            // Temperature
             lv_obj_t* temp_label = lv_label_create(item);
             if (temp_label) {
               char temp_str[10];
