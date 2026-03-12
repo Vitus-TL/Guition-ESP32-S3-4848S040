@@ -100,15 +100,23 @@ text_sensor:
           condition:
             lambda: 'return x == "paused";'
           then:
-            - lvgl.label.update: 
+            - lvgl.label.update:
                 id: media_player_state_label
                 x: 0
                 text: "${play_icon}"
+            - lvgl.arc.update:
+                id: media_player_volume_arc
+                indicator:
+                  arc_color: color_orange
           else:
-            - lvgl.label.update: 
+            - lvgl.label.update:
                 id: media_player_state_label
                 x: 0
                 text: "${pause_icon}"
+            - lvgl.arc.update:
+                id: media_player_volume_arc
+                indicator:
+                  arc_color: color_green
 
   - platform: homeassistant
     id: media_player_cover_sensor
@@ -749,7 +757,7 @@ lvgl:
                         arc_rounded: false
                         indicator:
                           arc_width: 5
-                          arc_color: color_green
+                          arc_color: color_misty_blue
 
                     - obj:
                         width: 100
