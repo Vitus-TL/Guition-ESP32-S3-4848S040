@@ -1516,6 +1516,27 @@ lvgl:
                     #    target_mode: 4
 
               - button:
+                  id: climate_widget_btn
+                  clickable: true
+                  x: -160
+                  width: 50
+                  height: 50
+                  align: right_mid
+                  bg_opa: transp
+                  shadow_opa: transp
+                  widgets:
+                    - label:
+                        align: center
+                        text_color: color_misty_blue
+                        text_font: icons_24
+                        text: "${climate_icon}"
+                  on_click:
+                    - lvgl.page.show: climate_page
+                    # - script.execute:
+                    #    id: switch_to_mode
+                    #    target_mode: 4
+
+              - button:
                   id: weather_widget_btn
                   clickable: true
                   x: -110
