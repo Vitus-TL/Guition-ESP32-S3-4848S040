@@ -696,6 +696,7 @@ text_sensor:
           }
           // Highlight active (x = your active preset string)
           for (const auto& e : map) {
+            if (!e.name) break;
             if (x == e.name) {
               lv_obj_set_style_text_color(e.lbl, *(e.col), LV_PART_MAIN);
               break;
