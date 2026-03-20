@@ -437,10 +437,11 @@ display:
     hsync_pin: 16
     vsync_pin: 17
     pclk_pin: 21
-    init_sequence: 
+    init_sequence:
       - 1
       - [0xFF, 0x77, 0x01, 0x00, 0x00, 0x10] # CMD2_BKSEL_BK0
       - [0xCD, 0x00] # disable MDT flag
+      # - [0x3A, 0x50] # COLMOD: force RGB565 (16-bit) pixel format; canned sequence 1 sets 0x60 (RGB666) which causes washed-out colours when LVGL renders RGB565
     pclk_frequency: 12MHz
     pclk_inverted: false
     data_pins:
