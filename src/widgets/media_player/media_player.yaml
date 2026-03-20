@@ -95,28 +95,21 @@ text_sensor:
   - platform: homeassistant
     id: media_player_state_sensor
     entity_id: "${media_player_entity}"
+    internal: true
     on_value:
-      - if:
-          condition:
-            lambda: 'return x == "paused";'
-          then:
-            - lvgl.label.update:
-                id: media_player_state_label
-                x: 0
-                text: "${play_icon}"
-            - lvgl.arc.update:
-                id: media_player_volume_arc
-                indicator:
-                  arc_color: color_orange
-          else:
-            - lvgl.label.update:
-                id: media_player_state_label
-                x: 0
-                text: "${pause_icon}"
-            - lvgl.arc.update:
-                id: media_player_volume_arc
-                indicator:
-                  arc_color: color_green
+      then:
+        - lambda: |-
+            auto s = x;
+            if (s == "paused") {
+              lv_label_set_text(id(media_player_state_label), "${play_icon}");
+              lv_obj_set_style_arc_color(id(media_player_volume_arc), lv_color_make(id(color_orange).r, id(color_orange).g, id(color_orange).b), LV_PART_INDICATOR);
+            } else if (s == "playing") {
+              lv_label_set_text(id(media_player_state_label), "${pause_icon}");
+              lv_obj_set_style_arc_color(id(media_player_volume_arc), lv_color_make(id(color_green).r, id(color_green).g, id(color_green).b), LV_PART_INDICATOR);
+            } else {
+              lv_label_set_text(id(media_player_state_label), "${play_icon}");
+              lv_obj_set_style_arc_color(id(media_player_volume_arc), lv_color_make(id(color_misty_blue).r, id(color_misty_blue).g, id(color_misty_blue).b), LV_PART_INDICATOR);
+            }
 
   - platform: homeassistant
     id: media_player_cover_sensor
@@ -972,7 +965,8 @@ script:
             lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
             lv_obj_set_style_bg_opa(btn, LV_OPA_TRANSP, 0);
             lv_obj_set_style_border_width(btn, 0, 0);
-            lv_obj_set_style_pad_all(btn, 10, 0);
+            // Source name doesn't fit into the window, reducing this from 10 to 5
+            lv_obj_set_style_pad_all(btn, 5, 0);
 
             lv_obj_set_flex_flow(btn, LV_FLEX_FLOW_ROW);
             lv_obj_set_flex_align(btn, LV_FLEX_ALIGN_START, 
