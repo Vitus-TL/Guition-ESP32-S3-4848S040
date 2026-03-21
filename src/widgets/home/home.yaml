@@ -30,7 +30,7 @@ globals:
   - id: forecast_daily_conditions
     type: std::string[10]
   
-  # Hourly forecast data
+  # Hourly forecast data. Most weather sources don't support this. But try e.g. OpenMeteo or Met.no (HACS: https://github.com/tmjo/ha-norwegianweather )
   - id: forecast_hourly_count
     type: int
     initial_value: '0'
@@ -315,7 +315,7 @@ text_sensor:
   # Weather forecast hourly sensor
   - platform: homeassistant
     id: weather_forecast_hourly_sensor
-    entity_id: sensor.display_tools_forecasts_hourly
+    entity_id: "sensor.${display_tools_forecasts_hourly}"
     attribute: forecasts
     internal: true
     on_value:
