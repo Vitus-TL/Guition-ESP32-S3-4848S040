@@ -211,7 +211,7 @@ sensor:
   # Home humidity sensor
   - platform: homeassistant
     id: home_humidity_sensor
-    entity_id: "${humidity_entity}"
+    entity_id: "${local_humidity_entity}"
     on_value: 
       then:
         - lvgl.label.update:
@@ -1696,7 +1696,7 @@ lvgl:
                               align: bottom_mid
                               text_font: nunito_20
                               text_color: color_misty_blue
-                              text: "100 %"
+                              text: " "
                           - obj:
                               id: circle_home_widget_line
                               width: 74
