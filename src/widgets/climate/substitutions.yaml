@@ -1,10 +1,12 @@
-climate_entity:     "climate.anna" # Plugwise Anna/Smile
-sleep_preset:       "asleep"
-eco_preset:         "eco"
-boost_preset:       "boost"
-comfort_preset:     "comfort"
-home_preset:        "home"
-activity_preset:    "activity"
-vacation_preset:    "vacation"
-away_preset:        "away"
-no_frost_preset:    "no_frost"
+climate_entity:       "climate.anna" # Plugwise Anna/Smile
+minimum_temperature:  "18.0" # Check climate.anna.min_temp for absolute minimum
+maximum_temperature:  "23.0" # Check climate.anna.max_temp for absolute maximum
+sleep_preset:         "asleep"
+eco_preset:           "eco"
+boost_preset:         "boost"
+comfort_preset:       "comfort"
+home_preset:          "home"
+activity_preset:      "activity"
+vacation_preset:      "vacation"
+away_preset:          "away"
+no_frost_preset:      "no_frost"

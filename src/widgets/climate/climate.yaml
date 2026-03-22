@@ -2147,8 +2147,8 @@ lvgl:
                                 float step = id(climate_temp_step);
                                 int   m    = id(climate_temp_step_multiplier);
 
-                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : 7.0f;
-                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : 35.0f;
+                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : ${minimum_temperature}f;
+                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : ${maximum_temperature}f;
 
                                 if (mode == "heat_cool") {
                                   float low = id(climate_sensor_target_temp_low).has_state()
@@ -2346,8 +2346,8 @@ lvgl:
                                 float step = id(climate_temp_step);
                                 int   m    = id(climate_temp_step_multiplier);
 
-                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : 5.0f;
-                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : 35.0f;
+                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : ${minimum_temperature}f;
+                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : ${maximum_temperature}f;
 
                                 if (mode == "heat_cool") {
                                     float low = id(climate_sensor_target_temp_low).has_state()
