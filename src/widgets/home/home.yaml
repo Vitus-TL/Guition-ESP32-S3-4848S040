@@ -315,7 +315,7 @@ text_sensor:
   # Weather forecast hourly sensor
   - platform: homeassistant
     id: weather_forecast_hourly_sensor
-    entity_id: "sensor.${display_tools_forecasts_hourly}"
+    entity_id: "sensor.display_tools_forecasts_hourly"
     attribute: forecasts
     internal: true
     on_value:

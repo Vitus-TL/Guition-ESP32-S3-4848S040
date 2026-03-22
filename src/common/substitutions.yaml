@@ -5,8 +5,7 @@ display_friendly_name:    Display My Room
 
 # ENTITIES
 
-weather_entity:                   "weather.buienradar"
-display_tools_forecasts_hourly:   "home_weather_main"
+weather_entity:                   "weather.home"
 temperature_entity:               "sensor.outside_temperature"
 humidity_entity:                  "sensor.outside_humidity"
 local_humidity_entity:            "sensor.hobeian_zg_204zv_humidity"      # Local/inside humidity entity
