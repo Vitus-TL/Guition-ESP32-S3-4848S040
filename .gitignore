@@ -7,3 +7,4 @@ src/translations/nl.yaml
 .gitignore
 .vim/
 .vimrc
+.claude/
