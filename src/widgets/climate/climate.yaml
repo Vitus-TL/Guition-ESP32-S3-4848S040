@@ -1493,7 +1493,7 @@ lvgl:
                           shadow_opa: 30%
                         on_value:
                           - lambda: |-
-                              if (!id(climate_ui_user_adjusting_target))
+                              if (!id(climate_ui_user_adjusting_target) && id(climate_arc_range_initialized))
                                 id(climate_ui_user_adjusting_target) = true;
 
                               {
@@ -1547,7 +1547,7 @@ lvgl:
                               std::string mode = id(climate_sensor_state).state;
 
                               if (mode == "heat_cool") {
-                                if (!id(climate_is_active_cool) && !id(climate_ui_user_adjusting_target))
+                                if (!id(climate_is_active_cool) && !id(climate_ui_user_adjusting_target) && id(climate_arc_range_initialized))
                                   id(climate_ui_user_adjusting_target) = true;
 
                                 if (!id(climate_ui_user_adjusting_target) || id(climate_is_active_cool))
@@ -1587,7 +1587,7 @@ lvgl:
                               }
 
                               if (mode == "heat") {
-                                if (!id(climate_ui_user_adjusting_target))
+                                if (!id(climate_ui_user_adjusting_target) && id(climate_arc_range_initialized))
                                   id(climate_ui_user_adjusting_target) = true;
 
                                 int low = lv_arc_get_value(id(climate_arc_base_heat));
@@ -1794,7 +1794,7 @@ lvgl:
                               std::string mode = id(climate_sensor_state).state;
 
                               if (mode == "heat_cool") {
-                                if (id(climate_is_active_cool) && !id(climate_ui_user_adjusting_target))
+                                if (id(climate_is_active_cool) && !id(climate_ui_user_adjusting_target) && id(climate_arc_range_initialized))
                                   id(climate_ui_user_adjusting_target) = true;
 
                                 if (!id(climate_ui_user_adjusting_target) || !id(climate_is_active_cool))
@@ -1837,7 +1837,7 @@ lvgl:
                               }
 
                               if (mode == "cool") {
-                                if (!id(climate_ui_user_adjusting_target))
+                                if (!id(climate_ui_user_adjusting_target) && id(climate_arc_range_initialized))
                                   id(climate_ui_user_adjusting_target) = true;
 
                                 int high = lv_arc_get_value(id(climate_arc_adjust_cool));
@@ -2866,11 +2866,9 @@ script:
               id(climate_sensor_min_temp).has_state() &&
               id(climate_sensor_max_temp).has_state()) {
 
-            int min_val = (int) id(climate_sensor_min_temp).state;
-            int max_val = (int) id(climate_sensor_max_temp).state;
             int m = id(climate_temp_step_multiplier);
-            int min_scaled = min_val * m;
-            int max_scaled = max_val * m;
+            int min_scaled = (int)(id(climate_sensor_min_temp).state * m + 0.5f);
+            int max_scaled = (int)(id(climate_sensor_max_temp).state * m + 0.5f);
 
             lv_arc_set_range(id(climate_arc_background), min_scaled, max_scaled);
             lv_arc_set_range(id(climate_arc_current_temperature), min_scaled, max_scaled);
@@ -2883,14 +2881,35 @@ script:
             lv_arc_set_range(id(climate_arc_segment_cool), min_scaled, max_scaled);
             lv_arc_set_range(id(climate_arc_adjust_cool), min_scaled, max_scaled);
 
+            // After lv_arc_set_range, any arc value outside the new range gets clamped
+            // to max, which triggers on_value and briefly shows the maximum temperature.
+            // Re-initialize arc values to the current target temperature (or midpoint).
             {
-              int minv_c = lv_arc_get_min_value(id(climate_arc_base_cool));
-              int maxv_c = lv_arc_get_max_value(id(climate_arc_base_cool));
-              int raw_c  = lv_arc_get_value(id(climate_arc_base_cool));
-              int high_scaled = minv_c + maxv_c - raw_c;
-              if (high_scaled < min_scaled) high_scaled = min_scaled;
-              if (high_scaled > max_scaled) high_scaled = max_scaled;
-              lv_arc_set_value(id(climate_arc_adjust_cool), high_scaled);
+              int init_val;
+              if (id(climate_sensor_target_temp).has_state()) {
+                init_val = (int)(id(climate_sensor_target_temp).state * m + 0.5f);
+                if (init_val < min_scaled) init_val = min_scaled;
+                if (init_val > max_scaled) init_val = max_scaled;
+              } else {
+                init_val = (min_scaled + max_scaled) / 2;
+              }
+              lv_arc_set_value(id(climate_arc_background), max_scaled);
+              lv_arc_set_value(id(climate_arc_knob), init_val);
+              lv_arc_set_value(id(climate_arc_base_heat), init_val);
+              lv_arc_set_value(id(climate_arc_dot_heat), init_val);
+              lv_arc_set_value(id(climate_arc_knob_heat), init_val);
+              lv_arc_set_value(id(climate_arc_current_temperature), init_val);
+
+              int cool_init_val;
+              if (id(climate_sensor_target_temp_high).has_state()) {
+                cool_init_val = (int)(id(climate_sensor_target_temp_high).state * m + 0.5f);
+                if (cool_init_val < min_scaled) cool_init_val = min_scaled;
+                if (cool_init_val > max_scaled) cool_init_val = max_scaled;
+              } else {
+                cool_init_val = init_val;
+              }
+              lv_arc_set_value(id(climate_arc_base_cool), min_scaled + max_scaled - cool_init_val);
+              lv_arc_set_value(id(climate_arc_adjust_cool), cool_init_val);
             }
 
             if (id(climate_sensor_state).state == "heat_cool") {
