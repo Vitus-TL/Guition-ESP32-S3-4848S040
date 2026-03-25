@@ -769,19 +769,10 @@ lvgl:
                               text_font: mdi_icons_52
                               text: "${play_icon}"
                               on_press:
-                                - if:
-                                    condition:
-                                      lambda: 'return id(media_player_state_sensor).state == "playing";'
-                                    then:
-                                      - homeassistant.action:
-                                          action: media_player.media_pause
-                                          data:
-                                            entity_id: "${media_player_entity}"
-                                    else:
-                                      - homeassistant.action:
-                                          action: media_player.media_play
-                                          data:
-                                            entity_id: "${media_player_entity}"
+                                - homeassistant.action:
+                                    action: media_player.media_play_pause
+                                    data:
+                                      entity_id: "${media_player_entity}"
 
         - obj:
             id: media_player_source_panel
