@@ -365,11 +365,56 @@ text_sensor:
                 lv_color_t misty = lv_color_make(id(color_misty_blue).r, id(color_misty_blue).g, id(color_misty_blue).b);
                 lv_obj_t* lbls[] = { id(climate_cool_mode_label), id(climate_heat_cool_mode_label), id(climate_dry_mode_label), id(climate_fan_mode_label), id(climate_auto_mode_label) };
                 for (auto l : lbls) lv_obj_set_style_text_color(l, misty, 0);
-                lv_obj_set_style_text_color(id(climate_heat_mode_label), lv_color_make(id(color_deep_orange).r, id(color_deep_orange).g, id(color_deep_orange).b), 0);
+                lv_obj_set_style_text_color(id(climate_heat_mode_label), lv_color_make(id(color_red).r, id(color_red).g, id(color_red).b), 0);
 
             - script.execute: climate_update_active_arc_layer
             - script.execute: climate_update_segments
             - script.execute: climate_update_adjust_buttons_color
+
+
+      - if:
+          condition:
+            lambda: 'return id(climate_sensor_state).state == "auto";'
+          then:
+            - lvgl.widget.show: climate_target_temperature_single
+            - lvgl.widget.hide: climate_target_temperature_dual
+            - lvgl.widget.hide: climate_arc_background
+            - lvgl.widget.hide: climate_arc_knob
+            - lvgl.widget.hide: climate_arc_base_cool
+            - lvgl.widget.hide: climate_arc_segment_cool
+            - lvgl.widget.hide: climate_arc_adjust_cool
+            - lvgl.widget.show: climate_arc_base_heat
+            - lvgl.widget.show: climate_arc_segment_heat
+            - lvgl.widget.show: climate_arc_dot_heat
+            - lvgl.widget.show: climate_arc_knob_heat
+            
+            - lambda: |-
+                id(climate_ui_user_adjusting_target) = false;
+                id(climate_is_active_cool) = false;
+    
+            - lambda: |-
+                lv_color_t c = lv_color_make(id(color_deep_orange).r, id(color_deep_orange).g, id(color_deep_orange).b);
+                lv_obj_set_style_text_color(id(climate_target_temperature_whole), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_fraction), c, 0);
+                lv_obj_set_style_text_color(id(climate_target_temperature_measurement), c, 0);
+    
+            - lvgl.arc.update:
+                id: climate_arc_base_heat
+                value: !lambda return (int)(id(climate_sensor_target_temp).state * id(climate_temp_step_multiplier) + 0.5f);
+            - lvgl.arc.update:
+                id: climate_arc_knob_heat
+                value: !lambda return (int)(id(climate_sensor_target_temp).state * id(climate_temp_step_multiplier) + 0.5f);
+
+            - lambda: |-
+                lv_color_t misty = lv_color_make(id(color_misty_blue).r, id(color_misty_blue).g, id(color_misty_blue).b);
+                lv_obj_t* lbls[] = { id(climate_cool_mode_label), id(climate_heat_cool_mode_label), id(climate_dry_mode_label), id(climate_fan_mode_label), id(climate_auto_mode_label) };
+                for (auto l : lbls) lv_obj_set_style_text_color(l, misty, 0);
+                lv_obj_set_style_text_color(id(climate_heat_mode_label), lv_color_make(id(color_red).r, id(color_red).g, id(color_red).b), 0);
+ 
+            - script.execute: climate_update_active_arc_layer
+            - script.execute: climate_update_segments
+            - script.execute: climate_update_adjust_buttons_color
+
 
       - if:
           condition:
@@ -642,6 +687,36 @@ text_sensor:
 
             // fallback
             return color_steel_blue;
+
+      # In heat/cool/heat_cool the dedicated arcs already reflect state.
+      # For generic-arc modes (auto, dry, fan_only, off) tint the arc and
+      # temperature display to match the current hvac_action so the user
+      # can see whether the system is actively heating, cooling, or idle.
+      - lambda: |-
+          std::string mode = id(climate_sensor_state).state;
+          if (mode == "heat" || mode == "cool" || mode == "heat_cool") return;
+
+          std::string action = x;
+          for (auto &ch : action) ch = (char)tolower((unsigned char)ch);
+
+          lv_color_t c;
+          if      (action == "heating" || action == "preheating")
+            c = lv_color_make(id(color_deep_orange).r, id(color_deep_orange).g, id(color_deep_orange).b);
+          else if (action == "cooling" || action == "defrosting")
+            c = lv_color_make(id(color_blue).r, id(color_blue).g, id(color_blue).b);
+          else {
+            // idle / off / fan / auto — restore the mode's base colour
+            if      (mode == "auto")     c = lv_color_make(id(color_green).r,      id(color_green).g,      id(color_green).b);
+            else if (mode == "dry")      c = lv_color_make(id(color_yellow).r,     id(color_yellow).g,     id(color_yellow).b);
+            else if (mode == "fan_only") c = lv_color_make(id(color_mint).r,       id(color_mint).g,       id(color_mint).b);
+            else                         c = lv_color_make(id(color_misty_blue).r,  id(color_misty_blue).g,  id(color_misty_blue).b);
+          }
+
+          lv_obj_set_style_arc_color(id(climate_arc_background), c, LV_PART_MAIN);
+          lv_obj_set_style_border_color(id(climate_arc_knob), c, LV_PART_KNOB);
+          lv_obj_set_style_text_color(id(climate_target_temperature_whole), c, 0);
+          lv_obj_set_style_text_color(id(climate_target_temperature_fraction), c, 0);
+          lv_obj_set_style_text_color(id(climate_target_temperature_measurement), c, 0);
 
   # CLIMATE HVAC MODES
   - platform: homeassistant
@@ -938,7 +1013,7 @@ lvgl:
                         id: climate_auto_mode_label
                         align: center
                         text_font: mdi_icons_28
-                        text_color: color_misty_blue
+                        text_color: color_blue
                         text: "${auto_icon}"
                   on_press:
                     - homeassistant.action: 
@@ -967,7 +1042,7 @@ lvgl:
                         id: climate_heat_mode_label
                         align: center
                         text_font: mdi_icons_28
-                        text_color: color_misty_blue
+                        text_color: color_red
                         text: "${heat_icon}"
                   on_press:
                     - homeassistant.action: 
@@ -2147,8 +2222,8 @@ lvgl:
                                 float step = id(climate_temp_step);
                                 int   m    = id(climate_temp_step_multiplier);
 
-                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : ${minimum_temperature}f;
-                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : ${maximum_temperature}f;
+                                float min_t = id(climate_sensor_min_temp).has_state() ? std::max(id(climate_sensor_min_temp).state, ${minimum_temperature}f) : ${minimum_temperature}f;
+                                float max_t = id(climate_sensor_max_temp).has_state() ? std::min(id(climate_sensor_max_temp).state, ${maximum_temperature}f) : ${maximum_temperature}f;
 
                                 if (mode == "heat_cool") {
                                   float low = id(climate_sensor_target_temp_low).has_state()
@@ -2346,8 +2421,8 @@ lvgl:
                                 float step = id(climate_temp_step);
                                 int   m    = id(climate_temp_step_multiplier);
 
-                                float min_t = id(climate_sensor_min_temp).has_state() ? id(climate_sensor_min_temp).state : ${minimum_temperature}f;
-                                float max_t = id(climate_sensor_max_temp).has_state() ? id(climate_sensor_max_temp).state : ${maximum_temperature}f;
+                                float min_t = id(climate_sensor_min_temp).has_state() ? std::max(id(climate_sensor_min_temp).state, ${minimum_temperature}f) : ${minimum_temperature}f;
+                                float max_t = id(climate_sensor_max_temp).has_state() ? std::min(id(climate_sensor_max_temp).state, ${maximum_temperature}f) : ${maximum_temperature}f;
 
                                 if (mode == "heat_cool") {
                                     float low = id(climate_sensor_target_temp_low).has_state()
@@ -2869,6 +2944,13 @@ script:
             int m = id(climate_temp_step_multiplier);
             int min_scaled = (int)(id(climate_sensor_min_temp).state * m + 0.5f);
             int max_scaled = (int)(id(climate_sensor_max_temp).state * m + 0.5f);
+
+            // Clamp to user-defined safety limits from substitutions
+            int user_min_scaled = (int)(${minimum_temperature}f * m + 0.5f);
+            int user_max_scaled = (int)(${maximum_temperature}f * m + 0.5f);
+            if (min_scaled < user_min_scaled) min_scaled = user_min_scaled;
+            if (max_scaled > user_max_scaled) max_scaled = user_max_scaled;
+            if (min_scaled >= max_scaled) { min_scaled = user_min_scaled; max_scaled = user_max_scaled; }
 
             lv_arc_set_range(id(climate_arc_background), min_scaled, max_scaled);
             lv_arc_set_range(id(climate_arc_current_temperature), min_scaled, max_scaled);
